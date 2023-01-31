@@ -1,4 +1,4 @@
-import { Drag } from './drag'
+import { detectDrag } from './drag'
 import { Zoom, ZoomSource } from './zoom'
 
 export interface Transform {
@@ -19,8 +19,6 @@ export class Area {
 
   private _startPosition: Transform | null = null
   private readonly _zoom: Zoom
-  private readonly _drag: Drag
-
   private readonly onChangeTransform: (transform: string) => void
 
   destroy: () => void
@@ -37,10 +35,11 @@ export class Area {
     // el.style.transformOrigin = "0 0";
 
     this._zoom = new Zoom(container, el, 0.1, this.onZoom.bind(this))
-    this._drag = new Drag(
+    const destroyDrag = detectDrag(
       container,
       this.onTranslate.bind(this),
       this.onStart.bind(this),
+      () => {},
     )
 
     const pointermove = this.pointermove.bind(this)
@@ -49,7 +48,7 @@ export class Area {
     this.destroy = () => {
       this.container.removeEventListener('pointermove', pointermove)
       this._zoom.destroy()
-      this._drag.destroy()
+      destroyDrag()
     }
   }
 

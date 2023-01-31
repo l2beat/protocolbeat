@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { useEffect, useRef } from 'react'
 
 import { Connection, ConnectionProps } from './Connection'
-import { Drag } from './viewport/drag'
+import { detectDrag } from './viewport/drag'
 
 export interface NodeProps {
   id: string
@@ -41,7 +41,7 @@ export function Node(props: NodeProps) {
       lastY = 0
     }
     if (ref.current) {
-      const drag = new Drag(
+      const destroyDrag = detectDrag(
         ref.current,
         (x, y) => {
           props.onTranslate?.(props.id, { x: x - lastX, y: y - lastY })
@@ -51,7 +51,7 @@ export function Node(props: NodeProps) {
         reset,
         reset,
       )
-      return () => drag.destroy()
+      return () => destroyDrag()
     }
   }, [props.id, props.onTranslate])
 
