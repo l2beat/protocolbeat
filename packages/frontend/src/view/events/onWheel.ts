@@ -1,4 +1,4 @@
-import { State } from '../State'
+import { State } from '../utils/State'
 
 const ZOOM_SENSITIVITY = 0.02
 const MAX_ZOOM = 3

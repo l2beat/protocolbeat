@@ -1,4 +1,4 @@
-import { State } from '../State'
+import { State } from '../utils/State'
 import { LEFT_MOUSE_BUTTON, MIDDLE_MOUSE_BUTTON } from './constants'
 
 export function onMouseUp(event: MouseEvent, state: State): State | undefined {

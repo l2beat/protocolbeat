@@ -1,5 +1,5 @@
-import { State } from '../State'
-import { updateNodePositions } from '../updateNodePositions'
+import { State } from '../utils/State'
+import { updateNodePositions } from '../utils/updateNodePositions'
 import { SHIFT_KEY, SPACE_KEY } from './constants'
 
 export function onKeyDown(

@@ -2,7 +2,7 @@ import { useRef } from 'react'
 
 import { Connection } from '../Connection'
 import { NodeView } from './NodeView'
-import { useViewportState } from './useViewportState'
+import { useViewportState } from './utils/useViewportState'
 
 export interface ViewportProps {
   nodes: {

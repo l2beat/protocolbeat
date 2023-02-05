@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Node } from './State'
+import { Node } from './utils/State'
 
 export interface NodeViewProps {
   node: Node
