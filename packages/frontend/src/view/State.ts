@@ -13,16 +13,14 @@ export interface State {
     readonly shiftKey: boolean
     readonly spaceKey: boolean
   }
-  readonly mouseAction: 'dragging' | 'panning' | 'none'
-  readonly drag: {
+  readonly mouseUpAction?: DeselectOne | DeselectAllBut
+  readonly mouseMoveAction: 'dragging' | 'panning' | 'none'
+  readonly mouseMove: {
     readonly startX: number
     readonly startY: number
     readonly currentX: number
     readonly currentY: number
-    readonly offsetX: number
-    readonly offsetY: number
   }
-  readonly mouseUpAction?: DeselectOne | DeselectAllBut
 }
 
 export interface Node {

@@ -12,12 +12,20 @@ export function onMouseMove(
   }
 
   if (state.pressed.leftMouseButton && event.button === LEFT_MOUSE_BUTTON) {
-    if (state.mouseUpAction) {
+    if (state.mouseMoveAction === 'none') {
+      return { ...state, mouseUpAction: undefined }
+    }
+    if (state.mouseMoveAction === 'panning') {
+      const [x, y] = [event.clientX, event.clientY]
       return {
         ...state,
-        mouseUpAction: undefined,
+        transform: {
+          ...state.transform,
+          offsetX: state.transform.offsetX + x - state.mouseMove.currentX,
+          offsetY: state.transform.offsetY + y - state.mouseMove.currentY,
+        },
+        mouseMove: { ...state.mouseMove, currentX: x, currentY: y },
       }
     }
-    console.log(event)
   }
 }

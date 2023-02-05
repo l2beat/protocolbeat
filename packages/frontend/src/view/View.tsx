@@ -20,16 +20,14 @@ const INITIAL_STATE: State = {
     shiftKey: false,
     spaceKey: false,
   },
-  mouseAction: 'none',
-  drag: {
+  mouseUpAction: undefined,
+  mouseMoveAction: 'none',
+  mouseMove: {
     startX: 0,
     startY: 0,
     currentX: 0,
     currentY: 0,
-    offsetX: 0,
-    offsetY: 0,
   },
-  mouseUpAction: undefined,
 }
 
 export function View() {

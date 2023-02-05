@@ -15,8 +15,7 @@ export function onMouseUp(event: MouseEvent, state: State): State | undefined {
       ...state,
       selectedNodeIds,
       pressed: { ...state.pressed, leftMouseButton: false },
-      mouseAction:
-        state.mouseAction === 'dragging' ? 'none' : state.mouseAction,
+      mouseMoveAction: 'none',
     }
   }
 
@@ -24,7 +23,8 @@ export function onMouseUp(event: MouseEvent, state: State): State | undefined {
     return {
       ...state,
       pressed: { ...state.pressed, middleMouseButton: false },
-      mouseAction: state.mouseAction === 'panning' ? 'none' : state.mouseAction,
+      mouseMoveAction:
+        state.mouseMoveAction === 'panning' ? 'none' : state.mouseMoveAction,
     }
   }
 }

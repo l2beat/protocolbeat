@@ -10,7 +10,17 @@ export function onMouseDown(
   const rect = container.getBoundingClientRect()
   const { offsetX, offsetY, scale } = state.transform
 
-  if (event.button === LEFT_MOUSE_BUTTON && state.mouseAction === 'none') {
+  if (event.button === LEFT_MOUSE_BUTTON && state.mouseMoveAction === 'none') {
+    if (state.pressed.spaceKey) {
+      const [x, y] = [event.clientX, event.clientY]
+      return {
+        ...state,
+        pressed: { ...state.pressed, leftMouseButton: true },
+        mouseMoveAction: 'panning',
+        mouseMove: { startX: x, startY: y, currentX: x, currentY: y },
+      }
+    }
+
     const x = (event.clientX - rect.left - offsetX) / scale
     const y = (event.clientY - rect.top - offsetY) / scale
 
@@ -41,15 +51,8 @@ export function onMouseDown(
           ...state,
           selectedNodeIds,
           pressed: { ...state.pressed, leftMouseButton: true },
-          mouseAction: 'dragging',
-          drag: {
-            startX: x,
-            startY: y,
-            currentX: x,
-            currentY: y,
-            offsetX: x,
-            offsetY: y,
-          },
+          mouseMoveAction: 'dragging',
+          mouseMove: { startX: x, startY: y, currentX: x, currentY: y },
           mouseUpAction,
         }
       }
@@ -59,23 +62,18 @@ export function onMouseDown(
       ...state,
       selectedNodeIds: [],
       pressed: { ...state.pressed, leftMouseButton: true },
-      mouseAction: state.pressed.spaceKey ? 'dragging' : 'none',
-      drag: {
-        startX: x,
-        startY: y,
-        currentX: x,
-        currentY: y,
-        offsetX: x,
-        offsetY: y,
-      },
+      mouseMoveAction: 'none',
     }
   }
 
-  if (event.button === MIDDLE_MOUSE_BUTTON && state.mouseAction === 'none') {
+  if (
+    event.button === MIDDLE_MOUSE_BUTTON &&
+    state.mouseMoveAction === 'none'
+  ) {
     return {
       ...state,
       pressed: { ...state.pressed, middleMouseButton: true },
-      mouseAction: 'panning',
+      mouseMoveAction: 'panning',
     }
   }
 }
