@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import { useEffect, useRef } from 'react'
 
-import { Connection, ConnectionProps } from './Connection'
-import { detectDrag } from './viewport/drag'
+import { Connection, ConnectionProps } from '../view/Connection'
+import { detectDrag } from './drag'
 
 export interface NodeProps {
   id: string

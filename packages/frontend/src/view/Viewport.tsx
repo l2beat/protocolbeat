@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { Connection } from '../Connection'
+import { Connection } from './Connection'
 import { NodeView } from './NodeView'
 import { useViewportState } from './utils/useViewportState'
 

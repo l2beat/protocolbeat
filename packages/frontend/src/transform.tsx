@@ -1,4 +1,4 @@
-import { FieldProps, NodeProps } from './Nodes'
+import { FieldProps, NodeProps } from './old/Nodes'
 import { ContractParameters, ContractValue, ProjectParameters } from './types'
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'

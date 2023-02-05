@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react'
 
-import { Area } from './viewport/area'
+import { Area } from './area'
 
 export interface ViewportProps {
   children: ReactNode

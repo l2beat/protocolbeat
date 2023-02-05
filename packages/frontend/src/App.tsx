@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import ky from 'ky'
 import { useState } from 'react'
 
-import { NodeProps, Nodes } from './Nodes'
+import { NodeProps, Nodes } from './old/Nodes'
 import { createEmptyNodes, transformContracts } from './transform'
 import { ProjectParameters } from './types'
 
