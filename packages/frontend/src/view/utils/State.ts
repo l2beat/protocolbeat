@@ -29,6 +29,7 @@ export interface State {
 export interface Node {
   readonly id: string
   readonly name: string
+  readonly discovered: boolean
   readonly box: Box
   readonly fields: Field[]
 }

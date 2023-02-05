@@ -4,7 +4,7 @@ import { Connection, Node, State } from './State'
 import { updateNodePositions } from './updateNodePositions'
 
 export function updateNodes(state: State, nodes: SimpleNode[]): State {
-  const oldIds = new Set(state.nodes.map((node) => node.id))
+  const oldNodes = new Map(state.nodes.map((node) => [node.id, node]))
   const newIds = new Set(nodes.map((node) => node.id))
 
   const retainedNodes = state.nodes.filter((node) => newIds.has(node.id))
@@ -15,24 +15,32 @@ export function updateNodes(state: State, nodes: SimpleNode[]): State {
       : Math.max(...retainedNodes.map((node) => node.box.x + node.box.width)) +
         NODE_SPACING
 
+  const updatedNodes = nodes
+    .filter((node) => oldNodes.has(node.id))
+    .map((node) => {
+      const oldNode = oldNodes.get(node.id)
+      return simpleNodeToNode(node, oldNode?.box.x ?? 0, oldNode?.box.y ?? 0)
+    })
+
   const addedNodes = nodes
-    .filter((node) => !oldIds.has(node.id))
+    .filter((node) => !oldNodes.has(node.id))
     .map((node, i) =>
-      simpleNodeToNode(node, startX + (NODE_WIDTH + NODE_SPACING) * i),
+      simpleNodeToNode(node, startX + (NODE_WIDTH + NODE_SPACING) * i, 0),
     )
 
   return updateNodePositions({
     ...state,
-    nodes: retainedNodes.concat(addedNodes),
+    nodes: updatedNodes.concat(addedNodes),
   })
 }
 
-function simpleNodeToNode(node: SimpleNode, x: number): Node {
+function simpleNodeToNode(node: SimpleNode, x: number, y: number): Node {
   return {
     id: node.id,
     name: node.name,
+    discovered: node.discovered,
     // height will be updated by updateNodePositions
-    box: { x, y: 0, width: NODE_WIDTH, height: 0 },
+    box: { x, y, width: NODE_WIDTH, height: 0 },
     fields: node.fields.map((field) => ({
       name: field.name,
       connection: toConnection(field.connection),
