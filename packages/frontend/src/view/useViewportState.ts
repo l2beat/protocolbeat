@@ -1,6 +1,10 @@
 import { RefObject, useEffect, useRef, useState } from 'react'
 
+import { onKeyDown } from './events/onKeyDown'
+import { onKeyUp } from './events/onKeyUp'
 import { onMouseDown } from './events/onMouseDown'
+import { onMouseMove } from './events/onMouseMove'
+import { onMouseUp } from './events/onMouseUp'
 import { onWheel } from './events/onWheel'
 import { State } from './State'
 
@@ -17,33 +21,78 @@ export function useViewportState(
   }, [state])
 
   useEffect(() => {
-    function handleWheel(e: WheelEvent) {
+    function handleWheel(event: WheelEvent) {
       if (!viewRef.current) {
         return
       }
-      const newState = onWheel(e, stateRef.current, viewRef.current)
+      const newState = onWheel(event, stateRef.current, viewRef.current)
       setState(newState)
     }
 
-    function handleMouseDown(e: MouseEvent) {
+    function handleMouseDown(event: MouseEvent) {
       if (!containerRef.current) {
         return
       }
-      const newState = onMouseDown(e, stateRef.current, containerRef.current)
+      const newState = onMouseDown(
+        event,
+        stateRef.current,
+        containerRef.current,
+      )
       if (newState) {
         setState(newState)
       }
     }
 
-    containerRef.current?.addEventListener('wheel', handleWheel, {
-      passive: false,
-    })
-    containerRef.current?.addEventListener('mousedown', handleMouseDown, {
-      passive: false,
-    })
+    function handleMouseMove(event: MouseEvent) {
+      if (!containerRef.current || !viewRef.current) {
+        return
+      }
+      const newState = onMouseMove(
+        event,
+        stateRef.current,
+        containerRef.current,
+        viewRef.current,
+      )
+      if (newState) {
+        setState(newState)
+      }
+    }
+
+    function handleMouseUp(event: MouseEvent) {
+      const newState = onMouseUp(event, stateRef.current)
+      if (newState) {
+        setState(newState)
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      const newState = onKeyDown(event, stateRef.current)
+      if (newState) {
+        setState(newState)
+      }
+    }
+
+    function handleKeyUp(event: KeyboardEvent) {
+      const newState = onKeyUp(event, stateRef.current)
+      if (newState) {
+        setState(newState)
+      }
+    }
+
+    const target = containerRef.current
+    target?.addEventListener('wheel', handleWheel, { passive: false })
+    target?.addEventListener('mousedown', handleMouseDown, { passive: false })
+    window.addEventListener('mousemove', handleMouseMove, { passive: false })
+    window.addEventListener('mouseup', handleMouseUp, { passive: false })
+    window.addEventListener('keydown', handleKeyDown, { passive: false })
+    window.addEventListener('keyup', handleKeyUp, { passive: false })
     return () => {
-      containerRef.current?.removeEventListener('wheel', handleWheel)
-      containerRef.current?.removeEventListener('mousedown', handleMouseDown)
+      target?.removeEventListener('wheel', handleWheel)
+      target?.removeEventListener('mousedown', handleMouseDown)
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
     }
   }, [setState])
 

@@ -1,20 +1,18 @@
 import { reverseIter } from '../reverseIter'
 import { State } from '../State'
-
-const LEFT_MOUSE_BUTTON = 0
-const MIDDLE_MOUSE_BUTTON = 1
+import { LEFT_MOUSE_BUTTON, MIDDLE_MOUSE_BUTTON } from './constants'
 
 export function onMouseDown(
-  e: MouseEvent,
+  event: MouseEvent,
   state: State,
   container: HTMLElement,
 ): State | undefined {
   const rect = container.getBoundingClientRect()
   const { offsetX, offsetY, scale } = state.transform
 
-  if (e.button === LEFT_MOUSE_BUTTON) {
-    const x = (e.clientX - rect.left - offsetX) / scale
-    const y = (e.clientY - rect.top - offsetY) / scale
+  if (event.button === LEFT_MOUSE_BUTTON && state.mouseAction === 'none') {
+    const x = (event.clientX - rect.left - offsetX) / scale
+    const y = (event.clientY - rect.top - offsetY) / scale
 
     for (const node of reverseIter(state.nodes)) {
       if (
@@ -23,20 +21,36 @@ export function onMouseDown(
         y >= node.box.y &&
         y < node.box.y + node.box.height
       ) {
-        if (e.shiftKey) {
-          const selectedNodeIds = state.selectedNodeIds.includes(node.id)
-            ? state.selectedNodeIds.filter((x) => x !== node.id)
-            : [...state.selectedNodeIds, node.id]
-          return {
-            ...state,
-            selectedNodeIds,
-            pressed: { ...state.pressed, leftMouseButton: true },
-          }
+        const includes = state.selectedNodeIds.includes(node.id)
+
+        let selectedNodeIds: readonly string[]
+        let mouseUpAction: State['mouseUpAction']
+        if (!event.shiftKey && !includes) {
+          selectedNodeIds = [node.id]
+        } else if (!event.shiftKey && includes) {
+          selectedNodeIds = state.selectedNodeIds
+          mouseUpAction = { type: 'DeselectAllBut', id: node.id }
+        } else if (event.shiftKey && !includes) {
+          selectedNodeIds = [...state.selectedNodeIds, node.id]
+        } else {
+          selectedNodeIds = state.selectedNodeIds
+          mouseUpAction = { type: 'DeselectOne', id: node.id }
         }
+
         return {
           ...state,
-          selectedNodeIds: [node.id],
+          selectedNodeIds,
           pressed: { ...state.pressed, leftMouseButton: true },
+          mouseAction: 'dragging',
+          drag: {
+            startX: x,
+            startY: y,
+            currentX: x,
+            currentY: y,
+            offsetX: x,
+            offsetY: y,
+          },
+          mouseUpAction,
         }
       }
     }
@@ -45,13 +59,23 @@ export function onMouseDown(
       ...state,
       selectedNodeIds: [],
       pressed: { ...state.pressed, leftMouseButton: true },
+      mouseAction: state.pressed.spaceKey ? 'dragging' : 'none',
+      drag: {
+        startX: x,
+        startY: y,
+        currentX: x,
+        currentY: y,
+        offsetX: x,
+        offsetY: y,
+      },
     }
   }
 
-  if (e.button === MIDDLE_MOUSE_BUTTON) {
+  if (event.button === MIDDLE_MOUSE_BUTTON && state.mouseAction === 'none') {
     return {
       ...state,
       pressed: { ...state.pressed, middleMouseButton: true },
+      mouseAction: 'panning',
     }
   }
 }

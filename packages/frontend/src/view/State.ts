@@ -11,7 +11,18 @@ export interface State {
     readonly leftMouseButton: boolean
     readonly middleMouseButton: boolean
     readonly shiftKey: boolean
+    readonly spaceKey: boolean
   }
+  readonly mouseAction: 'dragging' | 'panning' | 'none'
+  readonly drag: {
+    readonly startX: number
+    readonly startY: number
+    readonly currentX: number
+    readonly currentY: number
+    readonly offsetX: number
+    readonly offsetY: number
+  }
+  readonly mouseUpAction?: DeselectOne | DeselectAllBut
 }
 
 export interface Node {
@@ -35,4 +46,14 @@ export interface Box {
   readonly y: number
   readonly width: number
   readonly height: number
+}
+
+export interface DeselectOne {
+  readonly type: 'DeselectOne'
+  readonly id: string
+}
+
+export interface DeselectAllBut {
+  readonly type: 'DeselectAllBut'
+  readonly id: string
 }

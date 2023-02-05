@@ -4,12 +4,16 @@ const ZOOM_SENSITIVITY = 0.02
 const MAX_ZOOM = 3
 const MIN_ZOOM = 0.3
 
-export function onWheel(e: WheelEvent, state: State, view: HTMLElement): State {
-  e.preventDefault()
-  const { deltaX, deltaY } = getWheelDelta(e)
+export function onWheel(
+  event: WheelEvent,
+  state: State,
+  view: HTMLElement,
+): State {
+  event.preventDefault()
+  const { deltaX, deltaY } = getWheelDelta(event)
   const { offsetX, offsetY, scale } = state.transform
 
-  if (e.ctrlKey || e.metaKey) {
+  if (event.ctrlKey || event.metaKey) {
     const rect = view.getBoundingClientRect()
 
     const desiredChange = -deltaY * ZOOM_SENSITIVITY
@@ -20,18 +24,18 @@ export function onWheel(e: WheelEvent, state: State, view: HTMLElement): State {
     return {
       ...state,
       transform: {
-        offsetX: offsetX + (rect.left - e.clientX) * change,
-        offsetY: offsetY + (rect.top - e.clientY) * change,
+        offsetX: offsetX + (rect.left - event.clientX) * change,
+        offsetY: offsetY + (rect.top - event.clientY) * change,
         scale: scale * (1 + change),
       },
     }
   } else {
-    const invert = e.shiftKey // TODO: shiftKey && !macos
+    const invert = event.shiftKey // TODO: shiftKey && !macos
     return {
       ...state,
       transform: {
-        offsetX: offsetX - (!invert ? e.deltaX : deltaY),
-        offsetY: offsetY - (!invert ? e.deltaY : deltaX),
+        offsetX: offsetX - (!invert ? event.deltaX : deltaY),
+        offsetY: offsetY - (!invert ? event.deltaY : deltaX),
         scale,
       },
     }
