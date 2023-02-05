@@ -17,7 +17,7 @@ export function NodeView({ node, selected }: NodeViewProps) {
         height: node.box.height,
       }}
       className={classNames(
-        'absolute rounded-md border-2 border-black cursor-pointer bg-white',
+        'absolute rounded-md border-2 border-black bg-white',
         selected && 'outline-indigo-300 outline outline-4',
       )}
     >
@@ -29,22 +29,20 @@ export function NodeView({ node, selected }: NodeViewProps) {
       >
         <div className="truncate">{node.name}</div>
       </div>
-      {node.fields.map((field, i) => (
+      {node.fields.map(({ name, connection }, i) => (
         <div className="relative" key={i}>
           <div className="w-full truncate px-2 h-[24px] leading-[24px]">
-            {field.name}
+            {name}
           </div>
-          {field.connection && (
+          {connection && (
             <div
               className={classNames(
                 'absolute w-[12px] h-[12px]',
                 'bg-white border-2 border-black rounded-full',
               )}
               style={{
-                left:
-                  field.connection.from.direction === 'left' ? -7 : undefined,
-                right:
-                  field.connection.from.direction === 'right' ? -7 : undefined,
+                left: connection.from.direction === 'left' ? -7 : undefined,
+                right: connection.from.direction === 'right' ? -7 : undefined,
                 top: 6,
               }}
             />

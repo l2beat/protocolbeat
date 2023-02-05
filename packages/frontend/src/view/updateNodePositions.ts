@@ -17,8 +17,7 @@ export function updateNodePositions(state: State) {
     const start = state.selectedPositions[node.id]
     nodeDimensions[node.id] = {
       width: node.box.width,
-      height:
-        HEADER_HEIGHT + node.fields.length * FIELD_HEIGHT + BORDER_WIDTH * 2,
+      height: HEADER_HEIGHT + BORDER_WIDTH + node.fields.length * FIELD_HEIGHT,
       x: start ? start.x + dx : node.box.x,
       y: start ? start.y + dy : node.box.y,
     }
@@ -61,7 +60,9 @@ function processConnection(
   from: { x: number; y: number; width: number },
   to: { x: number; y: number; width: number },
 ): Omit<Connection, 'nodeId'> {
-  const y = from.y + HEADER_HEIGHT + FIELD_HEIGHT * (index + 0.5)
+  const fromY =
+    from.y + HEADER_HEIGHT + BORDER_WIDTH + FIELD_HEIGHT * (index + 0.5)
+  const toY = to.y + HEADER_HEIGHT / 2
 
   const left = from.x - BORDER_WIDTH / 2
   const right = from.x + from.width - BORDER_WIDTH * 1.5
@@ -75,23 +76,23 @@ function processConnection(
 
   if (min === leftToLeft) {
     return {
-      from: { direction: 'left', x: from.x, y },
-      to: { direction: 'left', x: to.x, y: to.y },
+      from: { direction: 'left', x: from.x, y: fromY },
+      to: { direction: 'left', x: to.x, y: toY },
     }
   } else if (min === leftToRight) {
     return {
-      from: { direction: 'left', x: from.x, y },
-      to: { direction: 'right', x: to.x + to.width, y: to.y },
+      from: { direction: 'left', x: from.x, y: fromY },
+      to: { direction: 'right', x: to.x + to.width, y: toY },
     }
   } else if (min === rightToLeft) {
     return {
-      from: { direction: 'right', x: from.x + from.width, y },
-      to: { direction: 'left', x: to.x, y: to.y },
+      from: { direction: 'right', x: from.x + from.width, y: fromY },
+      to: { direction: 'left', x: to.x, y: toY },
     }
   } else if (min === rightToRight) {
     return {
-      from: { direction: 'right', x: from.x + from.width, y },
-      to: { direction: 'right', x: to.x + to.width, y: to.y },
+      from: { direction: 'right', x: from.x + from.width, y: fromY },
+      to: { direction: 'right', x: to.x + to.width, y: toY },
     }
   }
 

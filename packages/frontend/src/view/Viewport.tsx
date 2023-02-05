@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 
+import { Connection } from '../Connection'
 import { NodeView } from './NodeView'
 import { useViewportState } from './useViewportState'
 
@@ -34,6 +35,18 @@ export function Viewport(props: ViewportProps) {
           className="w-full h-full bg-[url(/grid.svg)] bg-center relative select-none origin-[0_0]"
           style={{ transform }}
         >
+          {state.nodes.map((node) =>
+            node.fields.map(
+              (field) =>
+                field.connection && (
+                  <Connection
+                    key={`${node.id}-${field.connection.nodeId}`}
+                    from={field.connection.from}
+                    to={field.connection.to}
+                  />
+                ),
+            ),
+          )}
           {state.nodes.map((node) => (
             <NodeView
               key={node.id}
