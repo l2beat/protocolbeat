@@ -1,6 +1,6 @@
 import { State } from '../State'
+import { updateNodePositions } from '../updateNodePositions'
 import { LEFT_MOUSE_BUTTON } from './constants'
-import { updateNodePositions } from './updateNodePositions'
 
 export function onMouseMove(
   event: MouseEvent,

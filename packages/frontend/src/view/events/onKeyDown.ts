@@ -1,6 +1,6 @@
 import { State } from '../State'
+import { updateNodePositions } from '../updateNodePositions'
 import { SHIFT_KEY, SPACE_KEY } from './constants'
-import { updateNodePositions } from './updateNodePositions'
 
 export function onKeyDown(
   event: KeyboardEvent,

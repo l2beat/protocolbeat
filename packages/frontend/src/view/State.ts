@@ -35,11 +35,15 @@ export interface Node {
 
 export interface Field {
   readonly name: string
-  readonly connection?: {
-    readonly fromDirection: 'left' | 'right'
-    readonly toNodeId: string
-    readonly toDirection: 'left' | 'right'
-  }
+  readonly connection?: Connection
+}
+
+export interface Connection {
+  readonly nodeId: string
+  readonly fromDirection: 'left' | 'right'
+  readonly toDirection: 'left' | 'right'
+  readonly toX: number
+  readonly toY: number
 }
 
 export interface Box {
@@ -57,4 +61,30 @@ export interface DeselectOne {
 export interface DeselectAllBut {
   readonly type: 'DeselectAllBut'
   readonly id: string
+}
+
+export const INITIAL_STATE: State = {
+  selectedNodeIds: [],
+  nodes: [],
+  selection: undefined,
+  transform: {
+    offsetX: 0,
+    offsetY: 0,
+    scale: 1,
+  },
+  pressed: {
+    leftMouseButton: false,
+    middleMouseButton: false,
+    shiftKey: false,
+    spaceKey: false,
+  },
+  mouseUpAction: undefined,
+  mouseMoveAction: 'none',
+  mouseMove: {
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    currentY: 0,
+  },
+  selectedPositions: {},
 }
