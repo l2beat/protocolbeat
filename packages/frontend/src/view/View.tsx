@@ -28,6 +28,7 @@ const INITIAL_STATE: State = {
     currentX: 0,
     currentY: 0,
   },
+  selectedPositions: {},
 }
 
 export function View() {

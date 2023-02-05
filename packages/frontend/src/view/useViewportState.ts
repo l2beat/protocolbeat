@@ -44,14 +44,13 @@ export function useViewportState(
     }
 
     function handleMouseMove(event: MouseEvent) {
-      if (!containerRef.current || !viewRef.current) {
+      if (!containerRef.current) {
         return
       }
       const newState = onMouseMove(
         event,
         stateRef.current,
         containerRef.current,
-        viewRef.current,
       )
       if (newState) {
         setState(newState)

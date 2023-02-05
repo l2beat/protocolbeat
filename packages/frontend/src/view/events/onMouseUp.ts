@@ -16,6 +16,7 @@ export function onMouseUp(event: MouseEvent, state: State): State | undefined {
       selectedNodeIds,
       pressed: { ...state.pressed, leftMouseButton: false },
       mouseMoveAction: 'none',
+      selectedPositions: {},
     }
   }
 

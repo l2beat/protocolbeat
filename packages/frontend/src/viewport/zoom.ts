@@ -70,8 +70,10 @@ export class Zoom {
 
   touches() {
     const e = { touches: this.pointers }
-    const [x1, y1] = [e.touches[0].clientX, e.touches[0].clientY]
-    const [x2, y2] = [e.touches[1].clientX, e.touches[1].clientY]
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const [x1, y1] = [e.touches[0]!.clientX, e.touches[0]!.clientY]
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const [x2, y2] = [e.touches[1]!.clientX, e.touches[1]!.clientY]
 
     const distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
 

@@ -1,5 +1,6 @@
 import { State } from '../State'
 import { SHIFT_KEY, SPACE_KEY } from './constants'
+import { updateNodePositions } from './updateNodePositions'
 
 export function onKeyDown(
   event: KeyboardEvent,
@@ -9,6 +10,9 @@ export function onKeyDown(
     return { ...state, pressed: { ...state.pressed, spaceKey: true } }
   }
   if (event.key === SHIFT_KEY) {
-    return { ...state, pressed: { ...state.pressed, shiftKey: true } }
+    return updateNodePositions({
+      ...state,
+      pressed: { ...state.pressed, shiftKey: true },
+    })
   }
 }

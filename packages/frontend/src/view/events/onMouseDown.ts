@@ -1,4 +1,3 @@
-import { reverseIter } from '../reverseIter'
 import { State } from '../State'
 import { LEFT_MOUSE_BUTTON, MIDDLE_MOUSE_BUTTON } from './constants'
 
@@ -54,6 +53,11 @@ export function onMouseDown(
           mouseMoveAction: 'dragging',
           mouseMove: { startX: x, startY: y, currentX: x, currentY: y },
           mouseUpAction,
+          selectedPositions: Object.fromEntries(
+            state.nodes
+              .filter((x) => selectedNodeIds.includes(x.id))
+              .map((node) => [node.id, { x: node.box.x, y: node.box.y }]),
+          ),
         }
       }
     }
@@ -75,5 +79,11 @@ export function onMouseDown(
       pressed: { ...state.pressed, middleMouseButton: true },
       mouseMoveAction: 'panning',
     }
+  }
+}
+
+function* reverseIter<T>(array: readonly T[]) {
+  for (let i = array.length - 1; i >= 0; i--) {
+    yield array[i] as T
   }
 }

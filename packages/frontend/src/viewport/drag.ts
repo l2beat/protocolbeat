@@ -20,7 +20,8 @@ export function detectDrag(
     const [x, y] = [e.pageX, e.pageY]
     const delta = [x - pointerStart[0], y - pointerStart[1]]
     const zoom = el.getBoundingClientRect().width / el.offsetWidth
-    onDrag(delta[0] / zoom, delta[1] / zoom, e)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    onDrag(delta[0]! / zoom, delta[1]! / zoom, e)
   }
 
   function up(e: PointerEvent) {

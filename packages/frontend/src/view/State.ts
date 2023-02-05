@@ -21,6 +21,9 @@ export interface State {
     readonly currentX: number
     readonly currentY: number
   }
+  readonly selectedPositions: Readonly<
+    Record<string, { readonly x: number; readonly y: number }>
+  >
 }
 
 export interface Node {
