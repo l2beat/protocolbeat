@@ -42,9 +42,9 @@ export function NodeView({ node, selected }: NodeViewProps) {
               )}
               style={{
                 left:
-                  field.connection.fromDirection === 'left' ? -7 : undefined,
+                  field.connection.from.direction === 'left' ? -7 : undefined,
                 right:
-                  field.connection.fromDirection === 'right' ? -7 : undefined,
+                  field.connection.from.direction === 'right' ? -7 : undefined,
                 top: 6,
               }}
             />

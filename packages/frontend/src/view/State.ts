@@ -40,10 +40,16 @@ export interface Field {
 
 export interface Connection {
   readonly nodeId: string
-  readonly fromDirection: 'left' | 'right'
-  readonly toDirection: 'left' | 'right'
-  readonly toX: number
-  readonly toY: number
+  readonly from: {
+    readonly direction: 'left' | 'right'
+    readonly x: number
+    readonly y: number
+  }
+  readonly to: {
+    readonly direction: 'left' | 'right'
+    readonly x: number
+    readonly y: number
+  }
 }
 
 export interface Box {

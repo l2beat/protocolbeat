@@ -30,12 +30,12 @@ export function updateNodePositions(state: State) {
       const box = nodeDimensions[node.id]
       if (!box) {
         // this should never happen
-        throw new Error('missing from for node ' + node.id)
+        throw new Error('missing dimensions for node ' + node.id)
       }
       return {
         ...node,
         box,
-        fields: node.fields.map((field) => {
+        fields: node.fields.map((field, index) => {
           if (!field.connection) {
             return field
           }
@@ -47,7 +47,7 @@ export function updateNodePositions(state: State) {
             ...field,
             connection: {
               nodeId: field.connection.nodeId,
-              ...processConnection(box, to),
+              ...processConnection(index, box, to),
             },
           }
         }),
@@ -57,9 +57,12 @@ export function updateNodePositions(state: State) {
 }
 
 function processConnection(
-  from: { x: number; width: number },
+  index: number,
+  from: { x: number; y: number; width: number },
   to: { x: number; y: number; width: number },
 ): Omit<Connection, 'nodeId'> {
+  const y = from.y + HEADER_HEIGHT + FIELD_HEIGHT * (index + 0.5)
+
   const left = from.x - BORDER_WIDTH / 2
   const right = from.x + from.width - BORDER_WIDTH * 1.5
 
@@ -72,31 +75,23 @@ function processConnection(
 
   if (min === leftToLeft) {
     return {
-      fromDirection: 'left',
-      toDirection: 'left',
-      toX: to.x,
-      toY: to.y,
+      from: { direction: 'left', x: from.x, y },
+      to: { direction: 'left', x: to.x, y: to.y },
     }
   } else if (min === leftToRight) {
     return {
-      fromDirection: 'left',
-      toDirection: 'right',
-      toX: to.x + to.width,
-      toY: to.y,
+      from: { direction: 'left', x: from.x, y },
+      to: { direction: 'right', x: to.x + to.width, y: to.y },
     }
   } else if (min === rightToLeft) {
     return {
-      fromDirection: 'right',
-      toDirection: 'left',
-      toX: to.x,
-      toY: to.y,
+      from: { direction: 'right', x: from.x + from.width, y },
+      to: { direction: 'left', x: to.x, y: to.y },
     }
   } else if (min === rightToRight) {
     return {
-      fromDirection: 'right',
-      toDirection: 'right',
-      toX: to.x + to.width,
-      toY: to.y,
+      from: { direction: 'right', x: from.x + from.width, y },
+      to: { direction: 'right', x: to.x + to.width, y: to.y },
     }
   }
 
