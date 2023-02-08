@@ -38,7 +38,8 @@ export function onMouseMove(
           mouseMove: { ...state.mouseMove, currentX: x, currentY: y },
         })
       }
-      case 'select': {
+      case 'select':
+      case 'select-add': {
         const { x, y } = getViewCoordinates(event, container, state.transform)
         const mouseMove = { ...state.mouseMove, currentX: x, currentY: y }
         const mouseSelection: Box = {
@@ -53,7 +54,12 @@ export function onMouseMove(
         return {
           ...state,
           selectedNodeIds: state.nodes
-            .filter((node) => intersects(node.box, mouseSelection))
+            .filter(
+              (node) =>
+                intersects(node.box, mouseSelection) ||
+                (state.mouseMoveAction === 'select-add' &&
+                  state.selectedNodeIds.includes(node.id)),
+            )
             .map((x) => x.id),
           mouseUpAction: undefined,
           mouseMove,

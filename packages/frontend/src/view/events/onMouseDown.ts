@@ -66,9 +66,9 @@ export function onMouseDown(
 
     return {
       ...state,
-      selectedNodeIds: [],
+      selectedNodeIds: event.shiftKey ? state.selectedNodeIds : [],
       pressed: { ...state.pressed, leftMouseButton: true },
-      mouseMoveAction: 'select',
+      mouseMoveAction: event.shiftKey ? 'select-add' : 'select',
       mouseMove: { startX: x, startY: y, currentX: x, currentY: y },
     }
   }
