@@ -13,7 +13,7 @@
     "format": "prettier --check .",
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --ext .ts --max-warnings 0 src",
-    "test": "mocha",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-import { expect } from 'earljs'
+import { describe, expect, it } from 'vitest'
 
 describe('the plus operator', () => {
   it('adds numbers', () => {

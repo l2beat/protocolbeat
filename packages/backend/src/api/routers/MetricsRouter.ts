@@ -8,7 +8,7 @@ import { Metrics } from '../../Metrics'
 export function createMetricsRouter(config: Config, metrics: Metrics) {
   const router = new Router()
 
-  if (!config.metricsAuth) {
+  if (!config.metricsAuth && process.env.NODE_ENV !== 'test') {
     console.warn(
       '/metrics accessible without any authorization. This is fine for local environment but not for production',
     )
