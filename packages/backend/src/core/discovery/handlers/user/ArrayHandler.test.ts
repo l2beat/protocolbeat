@@ -1,5 +1,5 @@
 import { Bytes, EthereumAddress } from '@protocol-beat/types'
-import { expect } from 'earljs'
+import { describe, expect, it } from 'vitest'
 
 import { mock } from '../../../../test/mock'
 import { DiscoveryLogger } from '../../DiscoveryLogger'

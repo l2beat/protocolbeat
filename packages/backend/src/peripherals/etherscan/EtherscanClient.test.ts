@@ -1,6 +1,6 @@
 import { EthereumAddress } from '@protocol-beat/types'
-import { expect } from 'earljs'
 import { Response } from 'node-fetch'
+import { describe, expect, it } from 'vitest'
 
 import { mock } from '../../test/mock'
 import { HttpClient } from '../HttpClient'
@@ -34,7 +34,7 @@ describe(EtherscanClient.name, () => {
       })
 
       const etherscanClient = new EtherscanClient(httpClient, 'url', 'key')
-      await expect(etherscanClient.call('mod', 'act', {})).toBeRejected(
+      await expect(etherscanClient.call('mod', 'act', {})).rejects.toThrow(
         'Server responded with non-2XX result: 404 Not Found',
       )
     })
@@ -47,8 +47,8 @@ describe(EtherscanClient.name, () => {
       })
 
       const etherscanClient = new EtherscanClient(httpClient, 'url', 'key')
-      await expect(etherscanClient.call('mod', 'act', {})).toBeRejected(
-        expect.stringMatching(/json/),
+      await expect(etherscanClient.call('mod', 'act', {})).rejects.toThrow(
+        'json',
       )
     })
 
@@ -60,7 +60,7 @@ describe(EtherscanClient.name, () => {
       })
 
       const etherscanClient = new EtherscanClient(httpClient, 'url', 'key')
-      await expect(etherscanClient.call('mod', 'act', {})).toBeRejected()
+      await expect(etherscanClient.call('mod', 'act', {})).rejects.toThrow()
     })
 
     it('returns a success response', async () => {

@@ -1,5 +1,5 @@
 import { Bytes, EthereumAddress } from '@protocol-beat/types'
-import { expect } from 'earljs'
+import { describe, expect, it } from 'vitest'
 
 import { mock } from '../../../test/mock'
 import { DiscoveryLogger } from '../DiscoveryLogger'
@@ -191,7 +191,7 @@ describe(executeHandlers.name, () => {
         DiscoveryLogger.SILENT,
       ),
     ])
-    await expect(promise).toBeRejected('Impossible to resolve dependencies')
+    await expect(promise).rejects.toThrow('Impossible to resolve dependencies')
   })
 
   it('unresolvable unknown', async () => {
@@ -203,7 +203,7 @@ describe(executeHandlers.name, () => {
         DiscoveryLogger.SILENT,
       ),
     ])
-    await expect(promise).toBeRejected('Impossible to resolve dependencies')
+    await expect(promise).rejects.toThrow('Impossible to resolve dependencies')
   })
 
   it('unresolvable cycle', async () => {
@@ -220,7 +220,7 @@ describe(executeHandlers.name, () => {
         DiscoveryLogger.SILENT,
       ),
     ])
-    await expect(promise).toBeRejected('Impossible to resolve dependencies')
+    await expect(promise).rejects.toThrow('Impossible to resolve dependencies')
   })
 
   it('handles handlers with errors', async () => {
