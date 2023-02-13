@@ -1,9 +1,9 @@
-import { Mock as MockFunction, mockFn } from 'earljs'
+import { vi, MockedFunction } from 'vitest'
 
 export type MockedObject<T> = T & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [P in keyof T]: T[P] extends (...args: any[]) => any
-    ? MockFunction.Of<T[P]>
+    ? MockedFunction<T[P]>
     : T[P]
 }
 
@@ -48,15 +48,11 @@ function replaceFunctionsWithMocks<T extends object>(object: T) {
   for (const key of Object.keys(clone) as (keyof T)[]) {
     const value = clone[key]
     if (typeof value === 'function') {
-      if (!isMockFunction(value)) {
+      if (!vi.isMockFunction(value)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
-        clone[key] = mockFn(value as any) as any
+        clone[key] = vi.fn(value as any) as any
       }
     }
   }
   return clone
-}
-
-function isMockFunction(x: unknown) {
-  return typeof x === 'function' && 'calls' in x
 }
