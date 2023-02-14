@@ -14,7 +14,7 @@
     "lint": "eslint --ext .ts,.tsx --max-warnings 0 src",
     "dev": "vite",
     "discover": "node -r esbuild-register src discover",
-    "test": "mocha",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

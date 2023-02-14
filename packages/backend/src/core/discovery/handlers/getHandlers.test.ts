@@ -1,4 +1,4 @@
-import { expect } from 'earljs'
+import { describe, expect, it } from 'vitest'
 
 import { DiscoveryLogger } from '../DiscoveryLogger'
 import { getHandlers } from './getHandlers'

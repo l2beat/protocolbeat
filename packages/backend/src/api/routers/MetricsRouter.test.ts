@@ -1,3 +1,5 @@
+import { describe, it } from 'vitest'
+
 import { Config } from '../../config'
 import { Metrics } from '../../Metrics'
 import { createMockHistogram } from '../../test/metrics'

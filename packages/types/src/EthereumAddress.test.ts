@@ -1,4 +1,4 @@
-import { expect } from 'earljs'
+import { describe, expect, it } from 'vitest'
 
 import { EthereumAddress } from './EthereumAddress'
 
@@ -7,26 +7,25 @@ describe(EthereumAddress.name, () => {
     const address = EthereumAddress(
       '0xabcdabcd12345678abcdabcd12345678abcdabcd',
     )
-    expect(address).toBeA(String)
+    expect(address).toBeTypeOf('string')
   })
 
   it('accepts addresses with checksum', () => {
     const address = EthereumAddress(
       '0xAbCdABCd12345678abcDabCd12345678ABcdaBcd',
     )
-    expect(address).toBeA(String)
+    expect(address).toBeTypeOf('string')
   })
 
   it('checks the checksum', () => {
     expect(() =>
       EthereumAddress('0xAbCdABCd12345678abcDabCd12345678ABcdaBcD'),
-    ).toThrow(TypeError, 'Invalid EthereumAddress')
+    ).toThrow(new TypeError('Invalid EthereumAddress'))
   })
 
   it('does not accept invalid strings', () => {
     expect(() => EthereumAddress('foo')).toThrow(
-      TypeError,
-      'Invalid EthereumAddress',
+      new TypeError('Invalid EthereumAddress'),
     )
   })
 

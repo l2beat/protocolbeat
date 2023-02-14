@@ -1,5 +1,5 @@
-import { expect } from 'earljs'
 import { readdirSync } from 'fs'
+import { describe, expect, it } from 'vitest'
 
 import { ConfigReader } from './ConfigReader'
 

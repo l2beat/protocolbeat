@@ -1,5 +1,4 @@
-import FakeTimers from '@sinonjs/fake-timers'
-import { expect } from 'earljs'
+import { describe, expect, it, vi } from 'vitest'
 
 import { RateLimiter } from './RateLimiter'
 
@@ -27,7 +26,8 @@ describe(RateLimiter.name, () => {
 
   for (const { name, callsPerMinute, tick, expectedCount } of cases) {
     it(`enforces rate limits over ${name}`, () => {
-      const clock = FakeTimers.install()
+      // const clock = FakeTimers.install()
+      vi.useFakeTimers()
 
       let count = 0
       const rateLimiter = new RateLimiter({ callsPerMinute })
@@ -37,8 +37,8 @@ describe(RateLimiter.name, () => {
         })
       }
 
-      clock.tick(tick)
-      clock.uninstall()
+      vi.advanceTimersByTime(tick - 1)
+      vi.useRealTimers()
       rateLimiter.clear()
 
       expect(count).toEqual(expectedCount)
@@ -52,7 +52,7 @@ describe(RateLimiter.name, () => {
     }
     const promiseA = rateLimiter.call(fn)
     const promiseB = rateLimiter.call(fn)
-    await expect(promiseA).toBeRejected('oops')
-    await expect(promiseB).toBeRejected('oops')
+    await expect(promiseA).rejects.toThrow('oops')
+    await expect(promiseB).rejects.toThrow('oops')
   })
 })
