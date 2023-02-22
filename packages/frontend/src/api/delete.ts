@@ -9,7 +9,8 @@ export function deleteNode(
     .filter((nodes) => idsToRemove.includes(nodes.id))
     .flatMap((node) => node.fields)
     .filter((field) => field.connection)
-    .map((field) => field.connection!)
+    .map((field) => field.connection)
+    .filter(Boolean) // this filter is just to ensure TS knows that there can't undefined values here
 
   if (
     !nodesReferencedFromDeletingNodes.every((id) => {

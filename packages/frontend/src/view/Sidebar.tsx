@@ -6,16 +6,14 @@ interface SidebarProps {
 }
 
 export function Sidebar({ selectedNodes, onDeleteNodes }: SidebarProps) {
-  if (selectedNodes.length === 0) {
+  const selectedNode = selectedNodes[0]
+  if (!selectedNode) {
     return <div>Click a contract to select it.</div>
   }
 
   if (selectedNodes.length === 1) {
     return (
-      <SidebarForSingleNode
-        node={selectedNodes[0]!}
-        onDeleteNodes={onDeleteNodes}
-      />
+      <SidebarForSingleNode node={selectedNode} onDeleteNodes={onDeleteNodes} />
     )
   }
 

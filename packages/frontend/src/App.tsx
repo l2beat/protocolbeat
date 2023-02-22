@@ -1,3 +1,5 @@
+import '@total-typescript/ts-reset'
+
 import classNames from 'classnames'
 import { useState } from 'react'
 
@@ -41,10 +43,8 @@ export function App() {
     try {
       const newNodes = deleteNode(nodes, id)
       setNodes(newNodes)
-      // eslint-disable-next-line
-    } catch (e: any) {
-      // eslint-disable-next-line
-      alert(e.message)
+    } catch (e: unknown) {
+      alert(e instanceof Error && e.message ? e.message : 'Unknown error')
     }
   }
 
