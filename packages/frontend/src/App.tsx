@@ -7,12 +7,17 @@ import { deleteNode } from './api/delete'
 import { discover } from './api/discover'
 import { merge } from './api/merge'
 import { SimpleNode } from './api/SimpleNode'
+import { nodeToSimpleNode } from './store/actions/updateNodes'
 import { useStore } from './store/store'
 import { Sidebar } from './view/Sidebar'
 import { Viewport } from './view/Viewport'
 
 export function App() {
-  const [nodes, setNodes] = useState<SimpleNode[]>([])
+  // load the initial nodes from the store that gets rehydrated from local storage at startup
+  const initialNodes = useStore((state) => state.nodes)
+  const [nodes, setNodes] = useState<SimpleNode[]>(
+    initialNodes.map(nodeToSimpleNode),
+  )
   const [loading, setLoading] = useState<Record<string, boolean>>({})
   const selectedIds = useStore((state) => state.selectedNodeIds)
   const selectedNodes = nodes.filter((x) => selectedIds.includes(x.id))

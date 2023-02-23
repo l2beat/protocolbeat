@@ -36,6 +36,8 @@ export function updateNodes(state: State, nodes: SimpleNode[]): Partial<State> {
 
 function simpleNodeToNode(node: SimpleNode, x: number, y: number): Node {
   return {
+    type: node.type,
+    data: (node as any).data,
     id: node.id,
     name: node.name,
     discovered: node.discovered,
@@ -44,6 +46,20 @@ function simpleNodeToNode(node: SimpleNode, x: number, y: number): Node {
     fields: node.fields.map((field) => ({
       name: field.name,
       connection: toConnection(field.connection),
+    })),
+  }
+}
+
+export function nodeToSimpleNode(node: Node): SimpleNode {
+  return {
+    type: node.type,
+    data: (node as any).data,
+    id: node.id,
+    name: node.name,
+    discovered: node.discovered,
+    fields: node.fields.map((field) => ({
+      name: field.name,
+      connection: field.connection?.nodeId,
     })),
   }
 }
