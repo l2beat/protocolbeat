@@ -35,6 +35,10 @@ export function App() {
     markLoading('global', false)
   }
 
+  async function clear() {
+    setNodes([])
+  }
+
   async function discoverContract(address: string) {
     console.log('DISCOVERING', address)
 
@@ -69,6 +73,15 @@ export function App() {
           {loading.global && '🔄'}
         </button>
         <p className="ml-2">Contracts loaded: {nodes.length}</p>
+        <button
+          className="ml-2	text-2xl"
+          type="button"
+          disabled={loading.global}
+          onClick={() => clear()}
+          title="Clear"
+        >
+          🚮
+        </button>
       </div>
 
       <div className="row-span-2 bg-white p-2 drop-shadow-xl">
