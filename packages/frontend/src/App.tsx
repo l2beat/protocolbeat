@@ -35,7 +35,7 @@ export function App() {
     markLoading('global', false)
   }
 
-  async function clear() {
+  function clear() {
     setNodes([])
   }
 
@@ -77,7 +77,7 @@ export function App() {
           className="ml-2	text-2xl"
           type="button"
           disabled={loading.global}
-          onClick={() => clear()}
+          onClick={clear}
           title="Clear"
         >
           🚮

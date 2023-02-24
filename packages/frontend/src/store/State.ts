@@ -30,7 +30,7 @@ export interface State {
 }
 
 export interface Node {
-  simpleNode: SimpleNode
+  readonly simpleNode: SimpleNode
   readonly box: Box
   readonly fields: Field[]
 }
