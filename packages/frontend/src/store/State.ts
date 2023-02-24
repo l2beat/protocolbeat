@@ -30,11 +30,7 @@ export interface State {
 }
 
 export interface Node {
-  readonly type: SimpleNode['type']
-  readonly data: any
-  readonly id: string
-  readonly name: string
-  readonly discovered: boolean
+  simpleNode: SimpleNode
   readonly box: Box
   readonly fields: Field[]
 }
