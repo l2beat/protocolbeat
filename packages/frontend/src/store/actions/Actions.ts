@@ -1,3 +1,4 @@
+import { Graphviz as TGraphviz } from '@hpcc-js/wasm/types/graphviz'
 import { SimpleNode } from '../../api/SimpleNode'
 
 export interface Actions {
@@ -8,5 +9,5 @@ export interface Actions {
   onMouseUp: (event: MouseEvent) => void
   onWheel: (event: WheelEvent, view: HTMLElement) => void
 
-  updateNodes: (nodes: SimpleNode[]) => void
+  updateNodes: (nodes: SimpleNode[], graphviz: TGraphviz | undefined) => void
 }

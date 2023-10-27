@@ -1,3 +1,4 @@
+import { Graphviz } from '@hpcc-js/wasm/types/graphviz'
 import { useEffect } from 'react'
 
 import { SimpleNode } from '../api/SimpleNode'
@@ -6,11 +7,13 @@ import { Connection } from './Connection'
 import { NodeView } from './NodeView'
 import { ScalableView } from './ScalableView'
 import { useViewport } from './useViewport'
+import { Graphviz as TGraphviz } from '@hpcc-js/wasm/types/graphviz'
 
 export interface ViewportProps {
   nodes: SimpleNode[]
   onDiscover: (nodeId: string) => void
   loading: Record<string, boolean | undefined>
+  graphviz: TGraphviz | undefined
 }
 
 export function Viewport(props: ViewportProps) {
@@ -18,7 +21,7 @@ export function Viewport(props: ViewportProps) {
 
   const updateNodes = useStore((state) => state.updateNodes)
   useEffect(() => {
-    updateNodes(props.nodes)
+    updateNodes(props.nodes, props.graphviz)
   }, [updateNodes, props.nodes])
 
   const nodes = useStore((state) => state.nodes)

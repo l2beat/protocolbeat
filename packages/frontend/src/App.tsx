@@ -1,7 +1,7 @@
 import '@total-typescript/ts-reset'
 
 import cx from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { deleteNode } from './api/delete'
 import { discover } from './api/discover'
@@ -11,6 +11,8 @@ import { nodeToSimpleNode } from './store/actions/updateNodes'
 import { useStore } from './store/store'
 import { Sidebar } from './view/Sidebar'
 import { Viewport } from './view/Viewport'
+import { Graphviz } from '@hpcc-js/wasm'
+import { Graphviz as TGraphviz } from '@hpcc-js/wasm/types/graphviz'
 
 export function App() {
   // load the initial nodes from the store that gets rehydrated from local storage at startup
@@ -19,9 +21,19 @@ export function App() {
     initialNodes.map(nodeToSimpleNode),
   )
   const [loading, setLoading] = useState<Record<string, boolean>>({})
+  const [graphviz, setGraphviz] = useState<TGraphviz | undefined>(undefined)
   const selectedIds = useStore((state) => state.selectedNodeIds)
   const selectedNodes = nodes.filter((x) => selectedIds.includes(x.id))
   const showSidebar = selectedNodes.length > 0
+
+  useEffect(() => {
+    async function loadGraphviz() {
+      const graphviz = await Graphviz.load();
+      setGraphviz(graphviz)
+    }
+
+    loadGraphviz();
+  })
 
   function markLoading(id: string, value: boolean) {
     setLoading((loading) => ({ ...loading, [id]: value }))
@@ -69,6 +81,7 @@ export function App() {
         <Viewport
           nodes={nodes}
           loading={loading}
+          graphviz={graphviz}
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onDiscover={discoverContract}
         />

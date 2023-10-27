@@ -8,7 +8,8 @@ export async function discover(
 ): Promise<SimpleNode[]> {
   console.log('Loading: ', address)
 
-  const res = await fetch(`/api/discover/${address}?maxDepth=${maxDepth}`)
+  // const res = await fetch(`/api/discover/${address}?maxDepth=${maxDepth}`)
+  const res = await fetch(`https://protocolbeat-frontend.vercel.app/api/discover/${address}?maxDepth=0`)
   if (!res.ok) {
     return []
   }
