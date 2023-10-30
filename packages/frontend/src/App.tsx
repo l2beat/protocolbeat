@@ -110,7 +110,7 @@ export function App() {
           />
 
           <div className="absolute top-0 w-full p-2">
-            <div className="flex flex-row content-center items-center	 justify-between">
+            <div className="flex flex-row content-center items-center justify-between">
               <div className="ml-2">Contracts loaded: {nodes.length}</div>
 
               <div>
@@ -130,7 +130,7 @@ export function App() {
 
               <div>
                 <button
-                  className="ml-2	text-2xl"
+                  className="ml-2 text-2xl"
                   type="button"
                   disabled={loading.global}
                   onClick={clear}
