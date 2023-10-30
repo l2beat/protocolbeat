@@ -53,7 +53,7 @@ function SidebarForSingleNode({
   const etherscanLink = `https://etherscan.io/address/${node.data.address.toString()}`
   const sourceLink =
     node.type === 'Contract'
-      ? `https://etherscan.deth.net/address/${node.data.address.toString()}#code`
+      ? `https://vscode.blockscan.com/ethereum/${node.data.address.toString()}`
       : undefined
 
   return (
