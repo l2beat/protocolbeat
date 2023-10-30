@@ -1,5 +1,10 @@
+import {
+  ContractParameters,
+  ContractValue,
+  DiscoveryOutput,
+} from '@l2beat/discovery-types'
+
 import { ContractNode, EOANode, SimpleNode } from './SimpleNode'
-import { DiscoveryOutput, ContractParameters, ContractValue } from '@l2beat/discovery-types'
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -106,7 +111,10 @@ function getProxyDetails(contract: ContractParameters): {
       implementations.push(contract.upgradeability.masterCopy.toString())
       break
     case 'EIP1967 proxy':
-      proxyFields.push({ name: 'admin', value: contract.upgradeability.admin.toString() })
+      proxyFields.push({
+        name: 'admin',
+        value: contract.upgradeability.admin.toString(),
+      })
       implementations.push(contract.upgradeability.implementation.toString())
       break
     case 'ZeppelinOS proxy':
@@ -124,12 +132,17 @@ function getProxyDetails(contract: ContractParameters): {
     case 'StarkWare diamond':
       implementations.push(
         contract.upgradeability.implementation.toString(),
-        ...Object.values(contract.upgradeability.facets).map(f => f.toString()),
+        ...Object.values(contract.upgradeability.facets).map((f) =>
+          f.toString(),
+        ),
       )
       break
     case 'Arbitrum proxy':
     case 'new Arbitrum proxy':
-      proxyFields.push({ name: 'admin', value: contract.upgradeability.admin.toString() })
+      proxyFields.push({
+        name: 'admin',
+        value: contract.upgradeability.admin.toString(),
+      })
       implementations.push(
         contract.upgradeability.userImplementation.toString(),
         contract.upgradeability.adminImplementation.toString(),
@@ -149,7 +162,9 @@ function getProxyDetails(contract: ContractParameters): {
       implementations.push(contract.upgradeability.implementation.toString())
       break
     case 'EIP2535 diamond proxy':
-      implementations.push(...contract.upgradeability.facets.map(f => f.toString()))
+      implementations.push(
+        ...contract.upgradeability.facets.map((f) => f.toString()),
+      )
       break
   }
 

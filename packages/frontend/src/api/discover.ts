@@ -1,4 +1,5 @@
 import { DiscoveryOutput } from '@l2beat/discovery-types'
+
 import { SimpleNode } from './SimpleNode'
 import { transformContracts } from './transform'
 

@@ -1,6 +1,6 @@
-import { DiscoveryOutput } from '@l2beat/discovery-types'
 import '@total-typescript/ts-reset'
 
+import { DiscoveryOutput } from '@l2beat/discovery-types'
 import cx from 'classnames'
 import { useState } from 'react'
 
@@ -54,14 +54,14 @@ export function App() {
   async function discoverFromFile(discoveredFile: File) {
     console.log('LOADING')
 
-    markLoading("Discovery.json parse", true)
+    markLoading('Discovery.json parse', true)
 
     const contents = await discoveredFile.text()
     const parsed: unknown = JSON.parse(contents)
     const discovery = parsed as DiscoveryOutput
     const result = transformContracts(discovery)
 
-    markLoading("Discovery.json parse", false)
+    markLoading('Discovery.json parse', false)
     setNodes((nodes) => merge(nodes, result))
   }
 
@@ -80,21 +80,16 @@ export function App() {
       className="h-full w-full"
       onDrop={(event) => {
         event.preventDefault()
-
-        if (event.dataTransfer.items) {
-          ;[...event.dataTransfer.items].forEach((item) => {
-            if (item.kind === 'file') {
-              const file = item.getAsFile()
-              if (file) {
-                discoverFromFile(file)
-              }
+        ;[...event.dataTransfer.items].forEach((item) => {
+          if (item.kind === 'file') {
+            const file = item.getAsFile()
+            if (file) {
+              discoverFromFile(file).catch((e) => {
+                throw e
+              })
             }
-          })
-        } else {
-          ;[...event.dataTransfer.files].forEach((file) => {
-            console.log(`API2: file.name = ${file.name}`)
-          })
-        }
+          }
+        })
       }}
       onDragOver={(event) => {
         event.preventDefault()
