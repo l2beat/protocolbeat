@@ -103,19 +103,15 @@ function getProxyDetails(contract: ContractParameters): {
   implementations: string[]
 } {
   const proxyFields: FieldProps[] = []
-  const implementations: string[] = []
+  const implementations: string[] = contract.implementations?.map(a => a.toString()) ?? []
   switch (contract.upgradeability.type) {
     case 'immutable':
-      break
-    case 'gnosis safe':
-      implementations.push(contract.upgradeability.masterCopy.toString())
       break
     case 'EIP1967 proxy':
       proxyFields.push({
         name: 'admin',
         value: contract.upgradeability.admin.toString(),
       })
-      implementations.push(contract.upgradeability.implementation.toString())
       break
     case 'ZeppelinOS proxy':
       if (contract.upgradeability.admin) {
@@ -124,18 +120,6 @@ function getProxyDetails(contract: ContractParameters): {
           value: contract.upgradeability.admin.toString(),
         })
       }
-      implementations.push(contract.upgradeability.implementation.toString())
-      break
-    case 'StarkWare proxy':
-      implementations.push(contract.upgradeability.implementation.toString())
-      break
-    case 'StarkWare diamond':
-      implementations.push(
-        contract.upgradeability.implementation.toString(),
-        ...Object.values(contract.upgradeability.facets).map((f) =>
-          f.toString(),
-        ),
-      )
       break
     case 'Arbitrum proxy':
     case 'new Arbitrum proxy':
@@ -143,28 +127,12 @@ function getProxyDetails(contract: ContractParameters): {
         name: 'admin',
         value: contract.upgradeability.admin.toString(),
       })
-      implementations.push(
-        contract.upgradeability.userImplementation.toString(),
-        contract.upgradeability.adminImplementation.toString(),
-      )
       break
     case 'resolved delegate proxy':
       proxyFields.push({
         name: 'addressManager',
         value: contract.upgradeability.addressManager.toString(),
       })
-      implementations.push(contract.upgradeability.implementation.toString())
-      break
-    case 'EIP897 proxy':
-      implementations.push(contract.upgradeability.implementation.toString())
-      break
-    case 'call implementation proxy':
-      implementations.push(contract.upgradeability.implementation.toString())
-      break
-    case 'EIP2535 diamond proxy':
-      implementations.push(
-        ...contract.upgradeability.facets.map((f) => f.toString()),
-      )
       break
   }
 
