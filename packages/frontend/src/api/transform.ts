@@ -103,7 +103,8 @@ function getProxyDetails(contract: ContractParameters): {
   implementations: string[]
 } {
   const proxyFields: FieldProps[] = []
-  const implementations: string[] = contract.implementations?.map(a => a.toString()) ?? []
+  const implementations: string[] =
+    contract.implementations?.map((a) => a.toString()) ?? []
   switch (contract.upgradeability.type) {
     case 'immutable':
       break
