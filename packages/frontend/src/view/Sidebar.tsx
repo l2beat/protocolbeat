@@ -51,7 +51,7 @@ function SidebarForSingleNode({
 
   const humanReadableName = node.type === 'Contract' ? node.name : node.type
   const etherscanLink = `https://etherscan.io/address/${node.data.address}`
-  const sourceLink = node.type === 'Contract' && 'code' in node.data ? node.data.code : undefined
+  const sourceLink = node.type === 'Contract' ? `https://etherscan.deth.net/address/${node.data.address}#code` : undefined
 
   return (
     <>

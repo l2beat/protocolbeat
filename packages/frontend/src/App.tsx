@@ -8,7 +8,7 @@ import { deleteNode } from './api/delete'
 import { discover } from './api/discover'
 import { merge } from './api/merge'
 import { SimpleNode } from './api/SimpleNode'
-import { transformContracts2 } from './api/transform'
+import { transformContracts } from './api/transform'
 import { nodeToSimpleNode } from './store/actions/updateNodes'
 import { useStore } from './store/store'
 import { Sidebar } from './view/Sidebar'
@@ -59,8 +59,7 @@ export function App() {
     const contents = await discoveredFile.text()
     const parsed: unknown = JSON.parse(contents)
     const discovery = parsed as DiscoveryOutput
-
-    const result = transformContracts2(discovery)
+    const result = transformContracts(discovery)
 
     markLoading("Discovery.json parse", false)
     setNodes((nodes) => merge(nodes, result))
