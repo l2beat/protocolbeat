@@ -13,7 +13,7 @@ export function onWheel(
   view: HTMLElement,
 ): Partial<State> {
   event.preventDefault()
-  const { deltaY } = getWheelDelta(event)
+  const { deltaX, deltaY } = getWheelDelta(event)
   const { offsetX, offsetY, scale } = state.transform
 
   if (event.ctrlKey || event.metaKey) {

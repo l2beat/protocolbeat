@@ -18,13 +18,12 @@ import { Viewport } from './view/Viewport'
 export function App() {
   // load the initial nodes from the store that gets rehydrated from local storage at startup
   const initialNodes = useStore((state) => state.nodes)
-  const [simpleNodes, setSimpleNodes] = useState<SimpleNode[]>(
+  const [nodes, setNodes] = useState<SimpleNode[]>(
     initialNodes.map(nodeToSimpleNode),
   )
   const [loading, setLoading] = useState<Record<string, boolean>>({})
-  const nodes = useStore((state) => state.nodes)
   const selectedIds = useStore((state) => state.selectedNodeIds)
-  const selectedNodes = simpleNodes.filter((x) => selectedIds.includes(x.id))
+  const selectedNodes = nodes.filter((x) => selectedIds.includes(x.id))
   const showSidebar = selectedNodes.length > 0
 
   function markLoading(id: string, value: boolean) {
@@ -41,7 +40,7 @@ export function App() {
   }
 
   function clear() {
-    setSimpleNodes([])
+    setNodes([])
   }
 
   async function discoverContract(address: string) {
@@ -50,7 +49,7 @@ export function App() {
     markLoading(address, true)
     const result = await discover(address)
     markLoading(address, false)
-    setSimpleNodes((nodes) => merge(nodes, result))
+    setNodes((nodes) => merge(nodes, result))
   }
 
   async function discoverFromFile(discoveredFile: File) {
@@ -64,13 +63,13 @@ export function App() {
     const result = transformContracts(discovery)
 
     markLoading('Discovery.json parse', false)
-    setSimpleNodes((nodes) => merge(nodes, result))
+    setNodes((nodes) => merge(nodes, result))
   }
 
   function deleteNodeAction(id: string[]) {
     try {
-      const newNodes = deleteNode(simpleNodes, id)
-      setSimpleNodes(newNodes)
+      const newNodes = deleteNode(nodes, id)
+      setNodes(newNodes)
     } catch (e: unknown) {
       alert(e instanceof Error && e.message ? e.message : 'Unknown error')
     }
@@ -105,7 +104,7 @@ export function App() {
       >
         <div className="relative flex h-full w-full items-center justify-center">
           <Viewport
-            nodes={simpleNodes}
+            nodes={nodes}
             loading={loading}
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onDiscover={discoverContract}
@@ -113,7 +112,7 @@ export function App() {
 
           <div className="absolute top-0 w-full p-2">
             <div className="flex flex-row content-center items-center justify-between">
-              <div className="ml-2">Contracts loaded: {simpleNodes.length}</div>
+              <div className="ml-2">Contracts loaded: {nodes.length}</div>
 
               <div>
                 <button
@@ -130,7 +129,7 @@ export function App() {
                 </button>
               </div>
 
-              <AutoLayoutButton nodes={nodes} />
+              <AutoLayoutButton nodes={initialNodes} />
 
               <div>
                 <button
