@@ -1,4 +1,9 @@
-import * as d3 from 'd3'
+import {
+  forceCenter,
+  forceLink,
+  forceManyBody,
+  forceSimulation,
+} from 'd3'
 import { useEffect, useState } from 'react'
 
 import { Node } from '../store/State'
@@ -35,45 +40,27 @@ export function AutoLayoutButton({ nodes }: D3LayoutProps) {
       )
       .filter((l) => l.target !== undefined)
 
-    const simulation = d3
-      .forceSimulation(simNodes)
+    forceSimulation(simNodes)
       .force(
         'link',
-        d3.forceLink(links).id((d) => d.id),
-        // .distance(20),
+        forceLink(links).id((d) => d.id as string),
       )
-      .force('charge', d3.forceManyBody()) //.strength(-15))
-      // .force('collide', d3.forceCollide(20))
-      .force('center', d3.forceCenter(0, 0))
-      // .force("radial", d3.forceRadial(d => Math.sqrt(d.x * d.x + d.y * d.y) * 5.5, 0, 0))
-      // .force('x', d3.forceX(1000).strength(0.01))
-      // .force('y', d3.forceY(0))
-      // .force("rightPush", rightPushForce(12.5))
+      .force('charge', forceManyBody())
+      .force('center', forceCenter(0, 0))
       .on('tick', ticked)
       .on('end', ended)
 
-    // Custom force to push linked nodes to the right
-    // function rightPushForce(strength) {
-    //   function force(alpha) {
-    //       links.forEach(link => {
-    //         if (link.source.x > link.target.x) {
-    //           link.target.x += strength * alpha;
-    //           link.source.x -= strength * alpha;
-    //         }
-    //       });
-    //   }
-    //   return force;
-    // }
-
-    // Set the position attributes of links and nodes each time the simulation ticks.
     function ticked() {
       moveNodes(
-        simNodes.map((n) => ({ ...n, x: n.x * SIM_SCALE, y: n.y * SIM_SCALE })),
+        simNodes.map((simNode) => ({
+          ...simNode,
+          x: simNode.x * SIM_SCALE,
+          y: simNode.y * SIM_SCALE,
+        })),
       )
     }
 
     function ended() {
-      console.log('Layout force simulation ended')
       setUpdatingLayout(false)
     }
 
