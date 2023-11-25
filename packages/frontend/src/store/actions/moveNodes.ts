@@ -1,9 +1,9 @@
 import { State } from '../State'
-import { updateNodePositions } from '../utils/updateNodePositions';
+import { updateNodePositions } from '../utils/updateNodePositions'
 
 export function moveNodes(
   state: State,
-  positions: { id: string; x: number, y: number }[],
+  positions: { id: string; x: number; y: number }[],
 ): Partial<State> {
   const nodes = state.nodes.map((node) => {
     const position = positions.find(
@@ -18,7 +18,7 @@ export function moveNodes(
         ...node.box,
         x: position.x * 10,
         y: position.y * 10,
-      }
+      },
     }
   })
 
