@@ -11,7 +11,7 @@ import { SimpleNode } from './api/SimpleNode'
 import { transformContracts } from './api/transform'
 import { nodeToSimpleNode } from './store/actions/updateNodes'
 import { useStore } from './store/store'
-import { D3Layout } from './view/D3Layout'
+import { AutoLayoutButton } from './view/AutoLayoutButton'
 import { Sidebar } from './view/Sidebar'
 import { Viewport } from './view/Viewport'
 
@@ -130,6 +130,8 @@ export function App() {
                 </button>
               </div>
 
+              <AutoLayoutButton nodes={nodes} />
+
               <div>
                 <button
                   className="ml-2 text-2xl"
@@ -144,8 +146,6 @@ export function App() {
             </div>
           </div>
         </div>
-
-        <D3Layout nodes={nodes} />
 
         {showSidebar && (
           <div className="row-span-2 bg-white p-2 drop-shadow-xl">

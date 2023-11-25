@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Node } from '../store/State'
 import { useStore } from '../store/store'
@@ -10,11 +10,14 @@ interface D3LayoutProps {
   nodes: readonly Node[]
 }
 
-export function D3Layout({ nodes }: D3LayoutProps) {
+export function AutoLayoutButton({ nodes }: D3LayoutProps) {
   const moveNodes = useStore((state) => state.moveNodes)
+  const [updatingLayout, setUpdatingLayout] = useState<boolean>(false)
 
   const draw = () => {
-    const simNodes = nodes.map((node, i) => ({
+    if (!updatingLayout) return
+
+    const simNodes = nodes.map((node) => ({
       id: node.simpleNode.id,
       x: node.box.x / SIM_SCALE,
       y: node.box.y / SIM_SCALE,
@@ -36,12 +39,10 @@ export function D3Layout({ nodes }: D3LayoutProps) {
       .forceSimulation(simNodes)
       .force(
         'link',
-        d3
-          .forceLink(links)
-          .id((d) => d.id)
-          // .distance(20),
+        d3.forceLink(links).id((d) => d.id),
+        // .distance(20),
       )
-      .force('charge', d3.forceManyBody())//.strength(-15))
+      .force('charge', d3.forceManyBody()) //.strength(-15))
       // .force('collide', d3.forceCollide(20))
       .force('center', d3.forceCenter(0, 0))
       // .force("radial", d3.forceRadial(d => Math.sqrt(d.x * d.x + d.y * d.y) * 5.5, 0, 0))
@@ -73,6 +74,7 @@ export function D3Layout({ nodes }: D3LayoutProps) {
 
     function ended() {
       console.log('Layout force simulation ended')
+      setUpdatingLayout(false)
     }
 
     // TODO: stop simulation if it's running (and on invalidation of this component)
@@ -80,7 +82,17 @@ export function D3Layout({ nodes }: D3LayoutProps) {
 
   useEffect(() => {
     draw()
-  }, [])
+  }, [updatingLayout])
 
-  return <></>
+  console.log('Updating layout', updatingLayout)
+  return (
+    <button
+      className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+      type="button"
+      disabled={updatingLayout}
+      onClick={() => setUpdatingLayout(true)}
+    >
+      {updatingLayout ? 'wait...' : 'Auto-layout'}
+    </button>
+  )
 }

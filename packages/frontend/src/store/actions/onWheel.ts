@@ -1,6 +1,5 @@
 import { State } from '../State'
 import {
-  IS_MACOS,
   MAX_ZOOM,
   MIN_ZOOM,
   SCROLL_LINE_HEIGHT,
@@ -14,7 +13,7 @@ export function onWheel(
   view: HTMLElement,
 ): Partial<State> {
   event.preventDefault()
-  const { deltaX, deltaY } = getWheelDelta(event)
+  const { deltaY } = getWheelDelta(event)
   const { offsetX, offsetY, scale } = state.transform
 
   const rect = view.getBoundingClientRect()
