@@ -1,9 +1,4 @@
-import {
-  forceCenter,
-  forceLink,
-  forceManyBody,
-  forceSimulation,
-} from 'd3'
+import { forceCenter, forceLink, forceManyBody, forceSimulation } from 'd3'
 import { useEffect, useState } from 'react'
 
 import { Node } from '../store/State'
@@ -74,7 +69,7 @@ export function AutoLayoutButton({ nodes }: D3LayoutProps) {
   console.log('Updating layout', updatingLayout)
   return (
     <button
-      className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+      className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
       type="button"
       disabled={updatingLayout}
       onClick={() => setUpdatingLayout(true)}

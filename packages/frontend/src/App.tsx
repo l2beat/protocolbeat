@@ -118,7 +118,7 @@ export function App() {
               <div>
                 <button
                   className={cx(
-                    'rounded bg-blue-500 py-2 px-4 font-bold text-white',
+                    'rounded bg-blue-500 px-4 py-2 font-bold text-white',
                     !loading.global && 'hover:bg-blue-700',
                   )}
                   type="button"
