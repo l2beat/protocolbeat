@@ -16,8 +16,8 @@ export function moveNodes(
       ...node,
       box: {
         ...node.box,
-        x: position.x * 10,
-        y: position.y * 10,
+        x: position.x,
+        y: position.y,
       },
     }
   })
