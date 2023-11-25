@@ -1,5 +1,6 @@
 import { State } from '../State'
 import {
+  IS_MACOS,
   MAX_ZOOM,
   MIN_ZOOM,
   SCROLL_LINE_HEIGHT,
