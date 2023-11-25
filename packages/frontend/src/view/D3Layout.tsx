@@ -2,6 +2,7 @@ import * as d3 from 'd3'
 import { useEffect, useRef } from 'react'
 
 import { Node } from '../store/State'
+import { useStore } from '../store/store'
 
 interface D3LayoutProps {
   nodes: readonly Node[]
@@ -9,6 +10,7 @@ interface D3LayoutProps {
 
 export function D3Layout({ nodes }: D3LayoutProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  const moveNodes = useStore((state) => state.moveNodes)
 
   const draw = () => {
     if (!svgRef.current) return
@@ -17,8 +19,8 @@ export function D3Layout({ nodes }: D3LayoutProps) {
 
     const simNodes = nodes.map((node) => ({
       id: node.simpleNode.id,
-      // x: node.box.x,
-      // y: node.box.y,
+      // x: node.box.x / 10,
+      // y: node.box.y / 10,
       node,
     }))
 
@@ -56,11 +58,15 @@ export function D3Layout({ nodes }: D3LayoutProps) {
       .forceSimulation(simNodes)
       .force(
         'link',
-        d3.forceLink(links).id((d) => d.id),
+        d3
+          .forceLink(links)
+          .id((d) => d.id)
+          .distance(20),
       )
-      .force('charge', d3.forceManyBody())
+      .force('charge', d3.forceManyBody().strength(-5))
       //     // .force("center", d3.forceCenter(width / 2, height / 2))
-      .force('center', d3.forceCenter(200, 200))
+      .force('collide', d3.forceCollide(20))
+      .force('center', d3.forceCenter(200, 0))
       .on('tick', ticked)
       .on('end', ended)
 
@@ -73,11 +79,15 @@ export function D3Layout({ nodes }: D3LayoutProps) {
         .attr('y2', (d) => d.target.y)
 
       node.attr('x', (d) => d.x).attr('y', (d) => d.y)
+      moveNodes(simNodes)
     }
 
     function ended() {
-      console.log('ended')
+      console.log('Layout force simulation ended')
+      moveNodes(simNodes)
     }
+
+    // TODO: stop simulation if it's running (and on invalidation of this component)
   }
 
   useEffect(() => {
@@ -89,7 +99,6 @@ export function D3Layout({ nodes }: D3LayoutProps) {
       className="absolute border-2 border-black bg-white"
       style={{ left: '100px', top: '100px', width: '400px', height: '400px' }}
     >
-      Hello sir!
       <svg ref={svgRef} className="h-full w-full" />
     </div>
   )

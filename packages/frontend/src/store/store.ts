@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 import { Actions } from './actions/Actions'
+import { moveNodes } from './actions/moveNodes'
 import { onKeyDown } from './actions/onKeyDown'
 import { onKeyUp } from './actions/onKeyUp'
 import { onMouseDown } from './actions/onMouseDown'
@@ -37,6 +38,7 @@ export const useStore = create<State & Actions>()(
       onMouseMove: (...args) => set((state) => onMouseMove(state, ...args)),
       onWheel: (...args) => set((state) => onWheel(state, ...args)),
       updateNodes: (...args) => set((state) => updateNodes(state, ...args)),
+      moveNodes: (...args) => set((state) => moveNodes(state, ...args)),
     }),
     {
       name: 'store',

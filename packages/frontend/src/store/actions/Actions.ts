@@ -1,4 +1,5 @@
 import { SimpleNode } from '../../api/SimpleNode'
+import { Box } from '../State'
 
 export interface Actions {
   onKeyDown: (event: KeyboardEvent) => void
@@ -9,4 +10,5 @@ export interface Actions {
   onWheel: (event: WheelEvent, view: HTMLElement) => void
 
   updateNodes: (nodes: SimpleNode[]) => void
+  moveNodes: (positions: { id: string, box: Box }[]) => void 
 }
