@@ -75,11 +75,9 @@ export function onMouseDown(
   }
 
   if (event.button === MIDDLE_MOUSE_BUTTON && !state.mouseMoveAction) {
-    const [x, y] = [event.clientX, event.clientY]
     return {
       pressed: { ...state.pressed, middleMouseButton: true },
       mouseMoveAction: 'pan',
-      mouseMove: { startX: x, startY: y, currentX: x, currentY: y },
     }
   }
 

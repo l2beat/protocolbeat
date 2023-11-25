@@ -16,19 +16,30 @@ export function onWheel(
   const { deltaY } = getWheelDelta(event)
   const { offsetX, offsetY, scale } = state.transform
 
-  const rect = view.getBoundingClientRect()
+  if (event.ctrlKey || event.metaKey) {
+    const rect = view.getBoundingClientRect()
 
-  const desiredChange = -deltaY * ZOOM_SENSITIVITY
-  let newScale = scale * (1 + desiredChange)
-  newScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newScale))
-  const change = newScale / scale - 1
+    const desiredChange = -deltaY * ZOOM_SENSITIVITY
+    let newScale = scale * (1 + desiredChange)
+    newScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newScale))
+    const change = newScale / scale - 1
 
-  return {
-    transform: {
-      offsetX: offsetX + (rect.left - event.clientX) * change,
-      offsetY: offsetY + (rect.top - event.clientY) * change,
-      scale: scale * (1 + change),
-    },
+    return {
+      transform: {
+        offsetX: offsetX + (rect.left - event.clientX) * change,
+        offsetY: offsetY + (rect.top - event.clientY) * change,
+        scale: scale * (1 + change),
+      },
+    }
+  } else {
+    const invert = event.shiftKey && !IS_MACOS
+    return {
+      transform: {
+        offsetX: offsetX - (!invert ? event.deltaX : deltaY),
+        offsetY: offsetY - (!invert ? event.deltaY : deltaX),
+        scale,
+      },
+    }
   }
 }
 
