@@ -11,7 +11,10 @@ import { SimpleNode } from './api/SimpleNode'
 import { transformContracts } from './api/transform'
 import { nodeToSimpleNode } from './store/actions/updateNodes'
 import { useStore } from './store/store'
-import { decodeNodeLocations } from './store/utils/storageParsing'
+import {
+  decodeNodeLocations,
+  getLayoutStorageKey,
+} from './store/utils/storageParsing'
 import { Sidebar } from './view/Sidebar'
 import { Viewport } from './view/Viewport'
 
@@ -47,7 +50,7 @@ export function App() {
   }
 
   function save() {
-    const data = localStorage.getItem(projectId)
+    const data = localStorage.getItem(getLayoutStorageKey(projectId))
     if (data === null) {
       return
     }

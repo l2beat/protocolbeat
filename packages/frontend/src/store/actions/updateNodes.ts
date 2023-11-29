@@ -1,7 +1,11 @@
 import { SimpleNode } from '../../api/SimpleNode'
 import { Connection, Node, State } from '../State'
 import { NODE_SPACING, NODE_WIDTH } from '../utils/constants'
-import { decodeNodeLocations, NodeLocations } from '../utils/storageParsing'
+import {
+  decodeNodeLocations,
+  getLayoutStorageKey,
+  NodeLocations,
+} from '../utils/storageParsing'
 import { updateNodePositions } from '../utils/updateNodePositions'
 
 export function updateNodes(state: State, nodes: SimpleNode[]): Partial<State> {
@@ -61,7 +65,7 @@ function getNodeBoxFromStorage(
   projectId: string,
   node: SimpleNode,
 ): Node['box'] | undefined {
-  const storage = localStorage.getItem(projectId)
+  const storage = localStorage.getItem(getLayoutStorageKey(projectId))
   if (storage === null) {
     return undefined
   }

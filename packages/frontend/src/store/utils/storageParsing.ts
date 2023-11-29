@@ -21,6 +21,10 @@ const StorageNodeLocations = z.object({
 export type NodeLocations = z.infer<typeof NodeLocations>
 export type StorageNodeLocations = z.infer<typeof StorageNodeLocations>
 
+export function getLayoutStorageKey(projectId: string): string {
+  return `layout/${projectId}`
+}
+
 export function encodeNodeLocations(state: State): StorageNodeLocations {
   return {
     version: 1,

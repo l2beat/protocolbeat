@@ -1,6 +1,6 @@
 import { Box, Connection, State } from '../State'
 import { BORDER_WIDTH, FIELD_HEIGHT, HEADER_HEIGHT } from '../utils/constants'
-import { encodeNodeLocations } from './storageParsing'
+import { encodeNodeLocations, getLayoutStorageKey } from './storageParsing'
 
 export function updateNodePositions(state: State): State {
   let dx = state.mouseMove.currentX - state.mouseMove.startX
@@ -112,5 +112,8 @@ function localPersistCallback(state: State): void {
     return
   }
   const locations = encodeNodeLocations(state)
-  localStorage.setItem(state.projectId, JSON.stringify(locations))
+  localStorage.setItem(
+    getLayoutStorageKey(state.projectId),
+    JSON.stringify(locations),
+  )
 }
