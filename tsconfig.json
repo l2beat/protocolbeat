@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2020",
-    "lib": ["es2020", "dom"],
+    "target": "ESNext",
     "module": "CommonJS",
+    "types": ["node"],
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
