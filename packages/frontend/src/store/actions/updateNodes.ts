@@ -54,8 +54,8 @@ export function updateNodeLocations(
     ...n,
     box: {
       ...n.box,
-      ...locations[n.simpleNode.id]
-    }
+      ...locations[n.simpleNode.id],
+    },
   }))
 
   return updateNodePositions({
