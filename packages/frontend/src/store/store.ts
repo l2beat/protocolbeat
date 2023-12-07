@@ -9,7 +9,7 @@ import { onMouseDown } from './actions/onMouseDown'
 import { onMouseMove } from './actions/onMouseMove'
 import { onMouseUp } from './actions/onMouseUp'
 import { onWheel } from './actions/onWheel'
-import { updateNodes } from './actions/updateNodes'
+import { updateNodeLocations, updateNodes } from './actions/updateNodes'
 import { State } from './State'
 
 export const useStore = create<State & Actions>()(
@@ -30,6 +30,8 @@ export const useStore = create<State & Actions>()(
       mouseMove: { startX: 0, startY: 0, currentX: 0, currentY: 0 },
       mouseSelection: undefined,
       selectedPositions: {},
+      saveLayoutStartTime: undefined,
+      projectId: '',
 
       onKeyDown: (...args) => set((state) => onKeyDown(state, ...args)),
       onKeyUp: (...args) => set((state) => onKeyUp(state, ...args)),
@@ -38,6 +40,10 @@ export const useStore = create<State & Actions>()(
       onMouseMove: (...args) => set((state) => onMouseMove(state, ...args)),
       onWheel: (...args) => set((state) => onWheel(state, ...args)),
       updateNodes: (...args) => set((state) => updateNodes(state, ...args)),
+      updateNodeLocations: (...args) =>
+        set((state) => updateNodeLocations(state, ...args)),
+      setProjectId: (projectId: string) =>
+        set((state) => ({ ...state, projectId: projectId })),
       moveNodes: (...args) => set((state) => moveNodes(state, ...args)),
     }),
     {
@@ -45,6 +51,7 @@ export const useStore = create<State & Actions>()(
       partialize: (state) => {
         return {
           nodes: state.nodes,
+          projectId: state.projectId,
         }
       },
     },
