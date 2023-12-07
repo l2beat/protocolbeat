@@ -67,7 +67,7 @@ export function updateNodeLocations(
 function getNodeBoxFromStorage(
   projectId: string,
   node: SimpleNode,
-): Node['box'] | undefined {
+) {
   const storage = localStorage.getItem(getLayoutStorageKey(projectId))
   if (storage === null) {
     return undefined

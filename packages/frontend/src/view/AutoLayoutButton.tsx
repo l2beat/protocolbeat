@@ -1,4 +1,11 @@
-import { forceCenter, forceLink, forceManyBody, forceSimulation } from 'd3'
+import {
+  forceCenter,
+  forceLink,
+  forceManyBody,
+  forceSimulation,
+  SimulationLinkDatum,
+  SimulationNodeDatum,
+} from 'd3'
 import { useEffect, useState } from 'react'
 
 import { Node } from '../store/State'
@@ -11,6 +18,18 @@ interface D3LayoutProps {
   nodes: readonly Node[]
 }
 
+interface SimulationNode extends SimulationNodeDatum {
+  id: string
+  x: number
+  y: number
+  node: Node
+}
+
+interface SimulationLink extends SimulationLinkDatum<SimulationNode> {
+  source: string
+  target: string
+}
+
 export function AutoLayoutButton({ nodes }: D3LayoutProps) {
   const updateNodeLocations = useStore((state) => state.updateNodeLocations)
   const [updatingLayout, setUpdatingLayout] = useState<boolean>(false)
@@ -18,11 +37,10 @@ export function AutoLayoutButton({ nodes }: D3LayoutProps) {
   const draw = () => {
     if (!updatingLayout) return
 
-    const simNodes = nodes.map((node) => ({
+    const simNodes: SimulationNode[] = nodes.map((node) => ({
       id: node.simpleNode.id,
       x: node.box.x / SIM_SCALE,
       y: node.box.y / SIM_SCALE,
-      fixed: true,
       node,
     }))
 
@@ -34,12 +52,12 @@ export function AutoLayoutButton({ nodes }: D3LayoutProps) {
           target: f.connection,
         })),
       )
-      .filter((l) => l.target !== undefined)
+      .filter((l) => l.target !== undefined) as SimulationLink[]
 
     forceSimulation(simNodes)
       .force(
         'link',
-        forceLink(links).id((d) => d.id as string),
+        forceLink(links).id((d) => (d as SimulationNode).id),
       )
       .force('charge', forceManyBody())
       .force('center', forceCenter(0, 0))
