@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { Node } from '../store/State'
 import { useStore } from '../store/store'
+import { NodeLocations } from '../store/utils/storageParsing'
 
 const SIM_SCALE = 10
 
@@ -11,7 +12,7 @@ interface D3LayoutProps {
 }
 
 export function AutoLayoutButton({ nodes }: D3LayoutProps) {
-  const moveNodes = useStore((state) => state.moveNodes)
+  const updateNodeLocations = useStore((state) => state.updateNodeLocations)
   const [updatingLayout, setUpdatingLayout] = useState<boolean>(false)
 
   const draw = () => {
@@ -46,13 +47,14 @@ export function AutoLayoutButton({ nodes }: D3LayoutProps) {
       .on('end', ended)
 
     function ticked() {
-      moveNodes(
-        simNodes.map((simNode) => ({
-          ...simNode,
+      const nodeLocations: NodeLocations = {}
+      simNodes.forEach((simNode) => {
+        nodeLocations[simNode.id] = {
           x: simNode.x * SIM_SCALE,
           y: simNode.y * SIM_SCALE,
-        })),
-      )
+        }
+      })
+      updateNodeLocations(nodeLocations)
     }
 
     function ended() {

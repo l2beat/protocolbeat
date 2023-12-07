@@ -12,5 +12,4 @@ export interface Actions {
   updateNodes: (nodes: SimpleNode[]) => void
   updateNodeLocations: (locations: NodeLocations) => void
   setProjectId: (projectId: string) => void
-  moveNodes: (positions: { id: string; x: number; y: number }[]) => void
 }

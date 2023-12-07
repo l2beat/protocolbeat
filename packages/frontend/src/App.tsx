@@ -164,9 +164,8 @@ export function App() {
                 </button>
               </div>
 
-              <AutoLayoutButton nodes={initialNodes} />
-
-              <div>
+              <div className="flex items-center">
+                <AutoLayoutButton nodes={initialNodes} />
                 <button
                   className="px-1 text-2xl hover:bg-gray-300"
                   type="button"

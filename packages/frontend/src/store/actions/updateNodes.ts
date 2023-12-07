@@ -52,7 +52,10 @@ export function updateNodeLocations(
 ): Partial<State> {
   const movedNodes = state.nodes.map((n) => ({
     ...n,
-    box: locations[n.simpleNode.id] ?? n.box,
+    box: {
+      ...n.box,
+      ...locations[n.simpleNode.id]
+    }
   }))
 
   return updateNodePositions({
