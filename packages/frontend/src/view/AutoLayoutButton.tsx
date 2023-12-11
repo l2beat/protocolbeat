@@ -5,7 +5,7 @@ import {
   forceSimulation,
   SimulationLinkDatum,
   SimulationNodeDatum,
-} from 'd3'
+} from 'd3-force'
 import { useEffect, useState } from 'react'
 
 import { Node } from '../store/State'
