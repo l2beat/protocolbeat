@@ -14,10 +14,6 @@ import { NodeLocations } from '../store/utils/storageParsing'
 
 const SIM_SCALE = 10
 
-interface D3LayoutProps {
-  nodes: readonly Node[]
-}
-
 interface SimulationNode extends SimulationNodeDatum {
   id: string
   x: number
@@ -30,12 +26,14 @@ interface SimulationLink extends SimulationLinkDatum<SimulationNode> {
   target: string
 }
 
-export function AutoLayoutButton({ nodes }: D3LayoutProps) {
+export function AutoLayoutButton() {
+  const nodes = useStore((state) => state.nodes)
   const updateNodeLocations = useStore((state) => state.updateNodeLocations)
   const [updatingLayout, setUpdatingLayout] = useState<boolean>(false)
 
   const draw = () => {
     if (!updatingLayout) return
+    console.log(nodes.length)
 
     const simNodes: SimulationNode[] = nodes.map((node) => ({
       id: node.simpleNode.id,
@@ -52,9 +50,12 @@ export function AutoLayoutButton({ nodes }: D3LayoutProps) {
           target: f.connection,
         })),
       )
-      .filter((l) => l.target !== undefined) as SimulationLink[]
+      .filter((l) => l.target !== undefined)
+      .filter(
+        (l) => simNodes.find((sn) => sn.id === l.target) !== undefined,
+      ) as SimulationLink[]
 
-    forceSimulation(simNodes)
+    const simulation = forceSimulation(simNodes)
       .force(
         'link',
         forceLink(links).id((d) => (d as SimulationNode).id),
@@ -76,6 +77,7 @@ export function AutoLayoutButton({ nodes }: D3LayoutProps) {
     }
 
     function ended() {
+      simulation.stop()
       setUpdatingLayout(false)
     }
 
