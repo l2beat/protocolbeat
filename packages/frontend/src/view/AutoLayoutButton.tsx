@@ -12,6 +12,9 @@ import { Node } from '../store/State'
 import { useStore } from '../store/store'
 import { NodeLocations } from '../store/utils/storageParsing'
 
+// d3 assumes each node is a single point (no width and height),
+// so we scale the coordinates of the simulation to move the nodes
+// further apart and not overlap
 const SIM_SCALE = 10
 
 interface SimulationNode extends SimulationNodeDatum {
@@ -33,7 +36,6 @@ export function AutoLayoutButton() {
 
   const draw = () => {
     if (!updatingLayout) return
-    console.log(nodes.length)
 
     const simNodes: SimulationNode[] = nodes.map((node) => ({
       id: node.simpleNode.id,
@@ -80,8 +82,6 @@ export function AutoLayoutButton() {
       simulation.stop()
       setUpdatingLayout(false)
     }
-
-    // TODO: stop simulation if it's running (and on invalidation of this component)
   }
 
   useEffect(() => {
