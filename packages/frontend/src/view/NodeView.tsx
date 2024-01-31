@@ -2,6 +2,8 @@ import classNames from 'classnames'
 import { useCallback } from 'react'
 
 import { Node } from '../store/State'
+import { RESIZE_HANDLE_SPACING } from '../store/utils/constants'
+import { ResizeHandle } from './ResizeHandle'
 
 export interface NodeViewProps {
   node: Node
@@ -22,7 +24,7 @@ export function NodeView(props: NodeViewProps) {
         left: props.node.box.x,
         top: props.node.box.y,
         width: props.node.box.width,
-        height: props.node.box.height,
+        height: props.node.box.height + RESIZE_HANDLE_SPACING,
       }}
       className={classNames(
         'absolute rounded-md border-2 border-black bg-white',
@@ -63,6 +65,7 @@ export function NodeView(props: NodeViewProps) {
           )}
         </div>
       ))}
+      <ResizeHandle nodeId={props.node.simpleNode.id} />
     </div>
   )
 }
