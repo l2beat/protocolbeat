@@ -2,7 +2,7 @@ import '@total-typescript/ts-reset'
 
 import { DiscoveryOutput } from '@l2beat/discovery-types'
 import cx from 'classnames'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { deleteNode } from './api/delete'
 import { discover } from './api/discover'
@@ -32,15 +32,6 @@ export function App() {
   const selectedIds = useStore((state) => state.selectedNodeIds)
   const selectedNodes = nodes.filter((x) => selectedIds.includes(x.id))
   const showSidebar = selectedNodes.length > 0
-
-  // Rehydrate store with layout from local storage on mount
-  useEffect(() => {
-    const data = localStorage.getItem(getLayoutStorageKey(projectId))
-    if (data !== null) {
-      const locations = decodeNodeLocations(data)
-      updateNodeLocations(locations.locations)
-    }
-  }, [projectId, updateNodeLocations, nodes])
 
   function markLoading(id: string, value: boolean) {
     setLoading((loading) => ({ ...loading, [id]: value }))
