@@ -40,7 +40,7 @@ export function App() {
       const locations = decodeNodeLocations(data)
       updateNodeLocations(locations.locations)
     }
-  }, [projectId, updateNodeLocations])
+  }, [projectId, updateNodeLocations, nodes])
 
   function markLoading(id: string, value: boolean) {
     setLoading((loading) => ({ ...loading, [id]: value }))
