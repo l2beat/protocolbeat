@@ -1,6 +1,5 @@
 import {
   forceCenter,
-  forceCollide,
   forceLink,
   forceManyBody,
   forceSimulation,
@@ -58,13 +57,6 @@ export function AutoLayoutButton() {
         (l) => simNodes.find((sn) => sn.id === l.target) !== undefined,
       ) as SimulationLink[]
 
-    const collideForce = forceCollide().radius((d) => {
-      const node = d as SimulationNode
-      const width = node.node.box.width / SIM_SCALE
-      const height = node.node.box.height / SIM_SCALE
-      return Math.sqrt(width * width + height * height) / 2
-    })
-
     const simulation = forceSimulation(simNodes)
       .force(
         'link',
@@ -72,7 +64,6 @@ export function AutoLayoutButton() {
       )
       .force('charge', forceManyBody())
       .force('center', forceCenter(0, 0))
-      .force('collide', collideForce)
       .on('tick', ticked)
       .on('end', ended)
 
