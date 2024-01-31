@@ -41,12 +41,10 @@ export function onMouseMove(
             : node,
         )
 
-        const newState = updateNodePositions({
+        return updateNodePositions({
           ...state,
           nodes,
         })
-
-        return newState
       }
       case 'pan': {
         const [x, y] = [event.clientX, event.clientY]
