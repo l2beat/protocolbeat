@@ -10,7 +10,9 @@ export interface NodeViewProps {
   node: Node
   selected: boolean
   discovered: boolean
+  hidden: boolean
   onDiscover: (nodeId: string) => void
+  onHideNode: (nodeId: string) => void
   loading: boolean
 }
 
@@ -35,6 +37,14 @@ export function NodeView(props: NodeViewProps) {
     })
   }, [])
 
+  const onHideNode = useCallback(() => {
+    props.onHideNode(props.node.simpleNode.id)
+  }, [props.onHideNode, props.node.simpleNode.id])
+
+  if (props.hidden) {
+    return null
+  }
+
   return (
     <div
       ref={ref}
@@ -57,11 +67,16 @@ export function NodeView(props: NodeViewProps) {
         )}
       >
         <div className="truncate">{props.node.simpleNode.name}</div>
-        {!props.discovered && (
-          <button onClick={onDiscover} disabled={props.loading}>
-            {props.loading ? '🔄' : '🔍'}
+        <div className="flex items-center justify-center gap-2">
+          {!props.discovered && (
+            <button onClick={onDiscover} disabled={props.loading}>
+              {props.loading ? '🔄' : '🔍'}
+            </button>
+          )}
+          <button onClick={onHideNode} disabled={props.loading}>
+            👁️
           </button>
-        )}
+        </div>
       </div>
       {props.node.fields.map(({ name, connection }, i) => (
         <div className="relative" key={i}>

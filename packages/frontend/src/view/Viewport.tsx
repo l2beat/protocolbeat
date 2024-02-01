@@ -10,6 +10,7 @@ import { useViewport } from './useViewport'
 export interface ViewportProps {
   nodes: SimpleNode[]
   onDiscover: (nodeId: string) => void
+  onHideNode: (nodeId: string) => void
   loading: Record<string, boolean | undefined>
 }
 
@@ -33,21 +34,27 @@ export function Viewport(props: ViewportProps) {
     >
       <ScalableView ref={viewRef} transform={transform}>
         {nodes.map((node) =>
-          node.fields.map(
-            (field, i) =>
-              field.connection && (
-                <Connection
-                  key={`${node.simpleNode.id}-${i}-${field.connection.nodeId}`}
-                  from={field.connection.from}
-                  to={field.connection.to}
-                  // Highlight selected node both ways
-                  isHighlighted={
-                    selectedNodeIds.includes(node.simpleNode.id) ||
-                    selectedNodeIds.includes(field.connection.nodeId)
-                  }
-                />
-              ),
-          ),
+          node.fields.map((field, i) => {
+            const shouldShow =
+              field.connection &&
+              !node.simpleNode.hidden &&
+              // check if connection is pointing to a node that is hidden
+              !nodes
+                .filter((n) => n.simpleNode.id === field.connection?.nodeId)
+                .every((n) => n.simpleNode.hidden)
+
+            if (!shouldShow) {
+              return null
+            }
+
+            return (
+              <Connection
+                key={`${node.simpleNode.id}-${i}-${field.connection.nodeId}`}
+                from={field.connection.from}
+                to={field.connection.to}
+              />
+            )
+          }),
         )}
         {nodes.map((node) => (
           <NodeView
@@ -55,7 +62,9 @@ export function Viewport(props: ViewportProps) {
             node={node}
             selected={selectedNodeIds.includes(node.simpleNode.id)}
             discovered={node.simpleNode.discovered}
+            hidden={node.simpleNode.hidden}
             onDiscover={props.onDiscover}
+            onHideNode={props.onHideNode}
             loading={!!props.loading[node.simpleNode.id]}
           />
         ))}

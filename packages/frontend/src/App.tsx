@@ -74,6 +74,28 @@ export function App() {
     setNodes((nodes) => merge(nodes, result))
   }
 
+  function hideNode(id: string) {
+    setNodes((nodes) =>
+      nodes.map((node) =>
+        node.id === id
+          ? {
+              ...node,
+              hidden: true,
+            }
+          : node,
+      ),
+    )
+  }
+
+  function revealAllNodes() {
+    setNodes((nodes) =>
+      nodes.map((node) => ({
+        ...node,
+        hidden: false,
+      })),
+    )
+  }
+
   async function loadFromFile(file: File) {
     console.log('LOADING')
 
@@ -143,6 +165,7 @@ export function App() {
             loading={loading}
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onDiscover={discoverContract}
+            onHideNode={hideNode}
           />
 
           <div className="absolute top-0 w-full p-2">
@@ -164,8 +187,14 @@ export function App() {
                 </button>
               </div>
 
-              <div className="flex items-center">
+              <div className="flex items-center gap-1">
                 <AutoLayoutButton />
+                <button
+                  onClick={revealAllNodes}
+                  className="rounded bg-blue-400 px-4 py-2 font-bold text-white hover:bg-blue-700"
+                >
+                  Reveal all ({nodes.filter((n) => n.hidden).length})
+                </button>
                 <button
                   className="px-1 text-2xl hover:bg-gray-300"
                   type="button"

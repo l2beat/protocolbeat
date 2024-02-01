@@ -16,6 +16,7 @@ export function transformContracts(discovery: DiscoveryOutput): SimpleNode[] {
       id: contract.address.toString(),
       name: emojifyContractName(contract),
       discovered: true,
+      hidden: false,
       fields: [...proxyFields, ...mapFields(contract.values)].filter(
         (x) => !x.connection || !implementations.includes(x.connection),
       ),
@@ -28,6 +29,7 @@ export function transformContracts(discovery: DiscoveryOutput): SimpleNode[] {
     id: address.toString(),
     name: `🧍 EOA ${address.toString()}`,
     discovered: true,
+    hidden: false,
     fields: [],
     data: {
       address: address.toString(),

@@ -4,6 +4,7 @@ interface SimpleNodeShared {
   id: string
   name: string
   discovered: boolean
+  hidden: boolean
   fields: {
     name: string
     connection?: string // id
