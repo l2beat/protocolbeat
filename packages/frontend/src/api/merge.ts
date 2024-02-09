@@ -25,6 +25,5 @@ function createEmptyNodes(nodes: SimpleNode[]): SimpleNode[] {
     name: 'Unknown',
     fields: [],
     discovered: false,
-    hidden: false,
   }))
 }
