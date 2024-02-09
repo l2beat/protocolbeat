@@ -10,7 +10,6 @@ export interface NodeViewProps {
   node: Node
   selected: boolean
   discovered: boolean
-  hidden: boolean
   onDiscover: (nodeId: string) => void
   onHideNode: (nodeId: string) => void
   loading: boolean
@@ -42,7 +41,7 @@ export function NodeView(props: NodeViewProps) {
     return () => {
       hideRef.current?.removeEventListener('mousedown', onHide, true)
     }
-  }, [props.hidden])
+  }, [])
 
   const onDiscover = useCallback(() => {
     props.onDiscover(props.node.simpleNode.id)
@@ -59,10 +58,6 @@ export function NodeView(props: NodeViewProps) {
       [props.node.simpleNode.id]: newBox,
     })
   }, [])
-
-  if (props.hidden) {
-    return null
-  }
 
   return (
     <div

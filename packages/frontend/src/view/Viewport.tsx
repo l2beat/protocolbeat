@@ -10,7 +10,6 @@ import { useViewport } from './useViewport'
 export interface ViewportProps {
   nodes: SimpleNode[]
   onDiscover: (nodeId: string) => void
-  onHideNode: (nodeId: string) => void
   loading: Record<string, boolean | undefined>
 }
 
@@ -22,10 +21,22 @@ export function Viewport(props: ViewportProps) {
     updateNodes(props.nodes)
   }, [updateNodes, props.nodes])
 
+  const setHiddenNodes = useStore((state) => state.setHiddenNodes)
+
   const nodes = useStore((state) => state.nodes)
   const selectedNodeIds = useStore((state) => state.selectedNodeIds)
+  const hiddenNodesIds = useStore((state) => state.hiddenNodesIds)
+
   const transform = useStore((state) => state.transform)
   const mouseSelection = useStore((state) => state.mouseSelection)
+
+  const visibleNodes = nodes.filter(
+    (node) => !hiddenNodesIds.includes(node.simpleNode.id),
+  )
+
+  function hideNode(nodeId: string) {
+    setHiddenNodes((nodes) => [...nodes, nodeId])
+  }
 
   return (
     <div
@@ -33,17 +44,13 @@ export function Viewport(props: ViewportProps) {
       className="relative h-full w-full overflow-hidden rounded-lg bg-white"
     >
       <ScalableView ref={viewRef} transform={transform}>
-        {nodes.map((node) =>
+        {visibleNodes.map((node) =>
           node.fields.map((field, i) => {
-            const shouldShow =
-              field.connection &&
-              !node.simpleNode.hidden &&
-              // check if connection is pointing to a node that is hidden
-              !nodes
-                .filter((n) => n.simpleNode.id === field.connection?.nodeId)
-                .every((n) => n.simpleNode.hidden)
+            const shouldHide =
+              !field.connection ||
+              hiddenNodesIds.find((id) => id === field.connection?.nodeId)
 
-            if (!shouldShow) {
+            if (shouldHide) {
               return null
             }
 
@@ -56,15 +63,14 @@ export function Viewport(props: ViewportProps) {
             )
           }),
         )}
-        {nodes.map((node) => (
+        {visibleNodes.map((node) => (
           <NodeView
             key={node.simpleNode.id}
             node={node}
             selected={selectedNodeIds.includes(node.simpleNode.id)}
             discovered={node.simpleNode.discovered}
-            hidden={node.simpleNode.hidden}
             onDiscover={props.onDiscover}
-            onHideNode={props.onHideNode}
+            onHideNode={hideNode}
             loading={!!props.loading[node.simpleNode.id]}
           />
         ))}

@@ -22,8 +22,10 @@ import { Viewport } from './view/Viewport'
 export function App() {
   // load the initial nodes from the store that gets rehydrated from local storage at startup
   const initialNodes = useStore((state) => state.nodes)
+  const hiddenNodesIds = useStore((state) => state.hiddenNodesIds)
   const projectId = useStore((state) => state.projectId)
   const updateNodeLocations = useStore((state) => state.updateNodeLocations)
+  const setHiddenNodes = useStore((state) => state.setHiddenNodes)
   const setProjectId = useStore((state) => state.setProjectId)
   const [nodes, setNodes] = useState<SimpleNode[]>(
     initialNodes.map(nodeToSimpleNode),
@@ -48,6 +50,7 @@ export function App() {
 
   function clear() {
     setNodes([])
+    setHiddenNodes(() => [])
   }
 
   function save() {
@@ -74,26 +77,8 @@ export function App() {
     setNodes((nodes) => merge(nodes, result))
   }
 
-  function hideNode(id: string) {
-    setNodes((nodes) =>
-      nodes.map((node) =>
-        node.id === id
-          ? {
-              ...node,
-              hidden: true,
-            }
-          : node,
-      ),
-    )
-  }
-
   function revealAllNodes() {
-    setNodes((nodes) =>
-      nodes.map((node) => ({
-        ...node,
-        hidden: false,
-      })),
-    )
+    setHiddenNodes(() => [])
   }
 
   async function loadFromFile(file: File) {
@@ -165,7 +150,6 @@ export function App() {
             loading={loading}
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onDiscover={discoverContract}
-            onHideNode={hideNode}
           />
 
           <div className="absolute top-0 w-full p-2">
@@ -193,7 +177,7 @@ export function App() {
                   onClick={revealAllNodes}
                   className="rounded bg-blue-400 px-4 py-2 font-bold text-white hover:bg-blue-700"
                 >
-                  Reveal all ({nodes.filter((n) => n.hidden).length})
+                  Reveal all ({hiddenNodesIds.length})
                 </button>
                 <button
                   className="px-1 text-2xl hover:bg-gray-300"
