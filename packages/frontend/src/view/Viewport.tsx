@@ -59,6 +59,10 @@ export function Viewport(props: ViewportProps) {
                 key={`${node.simpleNode.id}-${i}-${field.connection.nodeId}`}
                 from={field.connection.from}
                 to={field.connection.to}
+                isHighlighted={
+                  selectedNodeIds.includes(node.simpleNode.id) ||
+                  selectedNodeIds.includes(field.connection.nodeId)
+                }
               />
             )
           }),
