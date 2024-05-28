@@ -5,6 +5,7 @@ export const HELD_LEFT_MOUSE_BUTTON_MASK = 1
 export const HELD_MIDDLE_MOUSE_BUTTON_MASK = 4
 
 export const SPACE_KEY = ' '
+export const CTRL_KEY = 'Control'
 export const SHIFT_KEY = 'Shift'
 
 export const IS_MACOS = navigator.userAgent.toLowerCase().includes('mac os')

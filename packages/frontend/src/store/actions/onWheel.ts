@@ -1,6 +1,5 @@
 import { State } from '../State'
 import {
-  IS_MACOS,
   MAX_ZOOM,
   MIN_ZOOM,
   SCROLL_LINE_HEIGHT,
@@ -21,7 +20,7 @@ export function onWheel(
     const rect = view.getBoundingClientRect()
 
     let desiredChange = -deltaY * ZOOM_SENSITIVITY
-    if (event.ctrlKey && IS_MACOS) {
+    if (event.ctrlKey && !state.pressed.ctrlKey) {
       // NOTE(radomski): This is a magic value but there is no other way to
       // handle this nicely in a compact way. The `onwheel` event triggers
       // for mouse scrolling, touchpad scrolling AND touchpad pinching.
