@@ -1,11 +1,11 @@
 import '@total-typescript/ts-reset'
 
-import { DiscoveryOutput } from '@l2beat/discovery-types'
 import cx from 'classnames'
 import { useState } from 'react'
 
 import { deleteNode } from './api/delete'
 import { merge } from './api/merge'
+import { parseDiscovery } from './api/paseDiscovery'
 import { SimpleNode } from './api/SimpleNode'
 import { transformContracts } from './api/transform'
 import { nodeToSimpleNode } from './store/actions/updateNodes'
@@ -79,8 +79,7 @@ export function App() {
 
       updateNodeLocations(locations.locations)
     } catch (_) {
-      const parsed: unknown = JSON.parse(contents)
-      const discovery = parsed as DiscoveryOutput
+      const discovery = parseDiscovery(JSON.parse(contents))
       const result = transformContracts(discovery)
 
       setNodes((nodes) => merge(nodes, result))
